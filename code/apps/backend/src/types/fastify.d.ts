@@ -1,11 +1,10 @@
 import 'fastify';
 import type { Errors } from '@enums/errors';
 import type { HttpStatusCode } from '@enums/http-status';
-import type { JwtPayload } from 'jsonwebtoken';
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user?: string | JwtPayload;
+    user?: AccessTokenPayload;
   }
 
   interface FastifyReply {
