@@ -28,10 +28,11 @@
         "@core/*": ["src/core/*"],
         "@entities/*": ["src/entities/*"],
         "@enums/*": ["src/enums/*"],
+        "@routes": ["src/routes"],
         "@routes/*": ["src/routes/*"],
         "@repositories/*": ["src/repositories/*"],
         "@services/*": ["src/services/*"],
-        "@utils/*": ["src/utils/*"]
+        "@utils/*": ["src/utils/*"],
       }
     }
   }

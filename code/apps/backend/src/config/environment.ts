@@ -9,6 +9,7 @@ dotenv.config();
 export interface Environment {
   NODE_ENV: string;
   PORT: number;
+  API_BASE_URL: string;
 
   MONGO_URI: string;
   MONGO_DATABASE: string;
@@ -21,6 +22,7 @@ export interface Environment {
 const variables: { [key: string]: string | undefined } = {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
+  API_BASE_URL: process.env.API_BASE_URL,
   MONGO_URI: process.env.MONGO_URI,
   MONGO_DATABASE: process.env.MONGO_DATABASE,
   JWT_SECRET: process.env.JWT_SECRET,
@@ -49,6 +51,7 @@ if (Number.isNaN(port)) {
 export const environment: Environment = {
   PORT: port,
   NODE_ENV: process.env.NODE_ENV as string,
+  API_BASE_URL: process.env.API_BASE_URL as string,
   MONGO_URI: process.env.MONGO_URI as string,
   MONGO_DATABASE: process.env.MONGO_DATABASE as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
