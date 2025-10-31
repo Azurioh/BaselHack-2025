@@ -1,10 +1,12 @@
 import 'fastify';
 import type { Errors } from '@enums/errors';
 import type { HttpStatusCode } from '@enums/http-status';
+import type { Db } from 'mongodb';
 
 declare module 'fastify' {
   interface FastifyRequest {
     user?: AccessTokenPayload;
+    db: Db;
   }
 
   interface FastifyReply {

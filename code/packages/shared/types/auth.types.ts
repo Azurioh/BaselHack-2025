@@ -7,7 +7,8 @@ export type SignUpBody = {
   email: string;
   password: string;
   name: string;
-  role: string;
+  category: string;
+  secret?: string;
 };
 
 /**
