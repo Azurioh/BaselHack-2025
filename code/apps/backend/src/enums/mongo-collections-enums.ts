@@ -4,4 +4,5 @@
  */
 export enum MongoCollections {
   USERS = 'users',
+  QUESTIONS = 'questions',
 }
