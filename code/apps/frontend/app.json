@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "BaselHack",
+    "slug": "baselhack",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "backgroundColor": "#ffffff",
+    "primaryColor": "#007AFF",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTabletMode": true
+    },
+    "android": {
+      "backgroundColor": "#ffffff"
+    },
+    "web": {
+      "backgroundColor": "#ffffff"
+    }
+  }
+}
