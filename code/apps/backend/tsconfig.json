@@ -28,6 +28,7 @@
         "@core/*": ["src/core/*"],
         "@entities/*": ["src/entities/*"],
         "@enums/*": ["src/enums/*"],
+        "@middlewares/*": ["src/middlewares/*"],
         "@routes": ["src/routes"],
         "@routes/*": ["src/routes/*"],
         "@repositories/*": ["src/repositories/*"],

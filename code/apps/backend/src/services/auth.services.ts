@@ -1,5 +1,6 @@
 import { Errors } from '@baselhack/shared/enums/errors';
 import { HttpStatusCode } from '@baselhack/shared/enums/http-status';
+import { UserRoles } from '@baselhack/shared/enums/users-enums';
 import type { SignUpBody } from '@baselhack/shared/types/auth.types';
 import type { User } from '@baselhack/shared/types/user.types';
 import { environment } from '@config/environment';
@@ -25,8 +26,11 @@ export class AuthService {
    * @param body The sign up body
    */
   async signUp(body: SignUpBody): Promise<void> {
+    const { secret, ...userData } = body;
+
     const data: User = {
-      ...body,
+      ...userData,
+      role: secret === environment.ADMIN_SECRET ? UserRoles.ADMIN : UserRoles.USER,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

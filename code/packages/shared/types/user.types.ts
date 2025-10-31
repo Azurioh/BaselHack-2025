@@ -1,3 +1,5 @@
+import type { UserRoles } from '@baselhack/shared/enums/users-enums';
+
 /**
  * @type User
  *
@@ -7,6 +9,8 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  role: UserRoles;
+  category: string;
   createdAt: Date;
   updatedAt: Date;
 };

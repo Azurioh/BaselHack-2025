@@ -14,6 +14,7 @@ export type Question = {
   anonymous: boolean;
   deadline: Date;
   answers: Answer[];
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 };
