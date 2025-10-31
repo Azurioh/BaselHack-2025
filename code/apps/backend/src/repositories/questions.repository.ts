@@ -43,4 +43,10 @@ export class QuestionsRepository {
 
     return deletedQuestion;
   }
+
+  async listAnswersByQuestionId(questionId: string) {
+    const question = await this.findQuestionById(questionId);
+
+    return question?.answers;
+  }
 }
