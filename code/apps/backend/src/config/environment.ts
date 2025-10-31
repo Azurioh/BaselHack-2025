@@ -10,16 +10,24 @@ export interface Environment {
   NODE_ENV: string;
   PORT: number;
   API_BASE_URL: string;
+
   MONGO_URI: string;
   MONGO_DATABASE: string;
+
+  JWT_SECRET: string;
+  JWT_REFRESH_SECRET: string;
+  JWT_RESET_PASSWORD_SECRET: string;
 }
 
 const variables: { [key: string]: string | undefined } = {
-  PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
+  PORT: process.env.PORT,
   API_BASE_URL: process.env.API_BASE_URL,
   MONGO_URI: process.env.MONGO_URI,
   MONGO_DATABASE: process.env.MONGO_DATABASE,
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  JWT_RESET_PASSWORD_SECRET: process.env.JWT_RESET_PASSWORD_SECRET,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -46,4 +54,7 @@ export const environment: Environment = {
   API_BASE_URL: process.env.API_BASE_URL as string,
   MONGO_URI: process.env.MONGO_URI as string,
   MONGO_DATABASE: process.env.MONGO_DATABASE as string,
+  JWT_SECRET: process.env.JWT_SECRET as string,
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
+  JWT_RESET_PASSWORD_SECRET: process.env.JWT_RESET_PASSWORD_SECRET as string,
 };
