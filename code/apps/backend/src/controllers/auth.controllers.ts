@@ -1,10 +1,15 @@
 import { Errors } from '@baselhack/shared/enums/errors';
 import { HttpStatusCode } from '@baselhack/shared/enums/http-status';
-import type { RefreshTokenBody, SignInBody, SignUpBody } from '@baselhack/shared/types/auth.types';
+import type {
+  LinkDiscordAccountBody,
+  RefreshTokenBody,
+  SignInBody,
+  SignUpBody,
+} from '@baselhack/shared/types/auth.types';
 import type { AuthService } from '@services/auth.services';
 import { isEmailValid, isPasswordValid } from '@utils/common';
 import { hashPassword } from '@utils/password';
-import { generateAccessToken, generateRefreshToken } from '@utils/token';
+import { generateAccessToken, generateAccessTokenForDiscord, generateRefreshToken } from '@utils/token';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 /**
@@ -58,6 +63,7 @@ export class AuthController {
       id: user._id.toString(),
       name: user.name,
       email: user.email,
+      role: user.role,
     });
     const refreshToken = generateRefreshToken({ id: user._id.toString() }, request.body.rememberMe);
 
@@ -79,5 +85,46 @@ export class AuthController {
     const token = await this.authService.refreshToken(request.body.refreshToken, request.user.id);
 
     reply.success({ token });
+  }
+
+  /**
+   * @function linkDiscordAccount
+   * @description Link a Discord account to a user
+   *
+   * @param request The request object
+   * @param reply The reply object
+   */
+  async linkDiscordAccount(request: FastifyRequest<{ Body: LinkDiscordAccountBody }>, reply: FastifyReply) {
+    if (!request.user) {
+      return reply.error('User not found', HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND);
+    }
+
+    await this.authService.linkDiscordAccount(request.user.id, request.body.discordId);
+
+    const token = generateAccessTokenForDiscord({
+      id: request.user.id,
+      name: request.user.name,
+      email: request.user.email,
+      role: request.user.role,
+    });
+
+    reply.success({ token }, HttpStatusCode.ok);
+  }
+
+  /**
+   * @function unlinkDiscordAccount
+   * @description Unlink a Discord account from a user
+   *
+   * @param request The request object
+   * @param reply The reply object
+   */
+  async unlinkDiscordAccount(request: FastifyRequest, reply: FastifyReply) {
+    if (!request.user) {
+      return reply.error('User not found', HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND);
+    }
+
+    await this.authService.unlinkDiscordAccount(request.user.id);
+
+    reply.success('Discord account unlinked successfully', HttpStatusCode.ok);
   }
 }

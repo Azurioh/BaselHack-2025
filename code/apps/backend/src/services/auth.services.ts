@@ -111,4 +111,16 @@ export class AuthService {
 
     await this.userRepository.updateUser(user._id.toString(), { ...userData, password: await hashPassword(password) });
   }
+
+  async linkDiscordAccount(id: string, discordId: string) {
+    const linkedUser = await this.userRepository.linkDiscordAccount(id, discordId);
+
+    return linkedUser;
+  }
+
+  async unlinkDiscordAccount(id: string) {
+    const unlinkedUser = await this.userRepository.unlinkDiscordAccount(id);
+
+    return unlinkedUser;
+  }
 }

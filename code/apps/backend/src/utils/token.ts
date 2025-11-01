@@ -14,6 +14,16 @@ export const generateAccessToken = (payload: AccessTokenPayload) => {
 };
 
 /**
+ * @description Generates an access token for Discord.
+ *
+ * @param payload The payload to sign.
+ * @returns The signed access token.
+ */
+export const generateAccessTokenForDiscord = (payload: AccessTokenPayload) => {
+  return jwt.sign(payload, environment.JWT_SECRET);
+};
+
+/**
  * @description Generates a refresh token.
  *
  * @param payload The payload to sign.

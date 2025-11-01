@@ -1,6 +1,6 @@
 import type { User } from '@baselhack/shared/types/user.types';
 import { MongoCollections } from '@enums/mongo-collections-enums';
-import type { Db, Filter } from 'mongodb';
+import { type Db, type Filter, ObjectId } from 'mongodb';
 
 export class UserRepository {
   private db: Db;
@@ -31,20 +31,38 @@ export class UserRepository {
   }
 
   async findUserById(id: string) {
-    const user = await this.db.collection<User>(MongoCollections.USERS).findOne({ id });
+    const user = await this.db.collection<User>(MongoCollections.USERS).findOne({ _id: new ObjectId(id) });
 
     return user;
   }
 
   async updateUser(id: string, user: User) {
-    const updatedUser = await this.db.collection<User>(MongoCollections.USERS).updateOne({ id }, { $set: user });
+    const updatedUser = await this.db
+      .collection<User>(MongoCollections.USERS)
+      .updateOne({ _id: new ObjectId(id) }, { $set: user });
 
     return updatedUser;
   }
 
   async deleteUser(id: string) {
-    const deletedUser = await this.db.collection<User>(MongoCollections.USERS).deleteOne({ id });
+    const deletedUser = await this.db.collection<User>(MongoCollections.USERS).deleteOne({ _id: new ObjectId(id) });
 
     return deletedUser;
+  }
+
+  async linkDiscordAccount(id: string, discordId: string) {
+    const linkedUser = await this.db
+      .collection<User>(MongoCollections.USERS)
+      .updateOne({ _id: new ObjectId(id) }, { $set: { discordId } });
+
+    return linkedUser;
+  }
+
+  async unlinkDiscordAccount(id: string) {
+    const unlinkedUser = await this.db
+      .collection<User>(MongoCollections.USERS)
+      .updateOne({ _id: new ObjectId(id) }, { $unset: { discordId: '' } });
+
+    return unlinkedUser;
   }
 }
