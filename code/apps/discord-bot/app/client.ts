@@ -95,6 +95,9 @@ class Client {
     await Promise.all(
       commandFiles.map(async (commandPath: string) => {
         const commandFile = await import(commandPath);
+        if (!commandFile.default) {
+          return;
+        }
         const command: CommandInterface = new commandFile.default();
         if (!command) {
           throw new Error(`The file ${commandPath} doesn't have a default export.`);

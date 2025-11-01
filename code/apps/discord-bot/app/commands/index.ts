@@ -2,9 +2,15 @@ import type { BaseInteraction, CommandInteraction, CommandInteractionOption, Use
 import type Client from '@/client';
 
 /**
- * @description Custom type for the
+ * @description Custom type for command options
+ * Note: Subcommands don't have a 'required' property, so it's optional
  */
-type Option = CommandInteractionOption & { description: string; required: boolean };
+type Option = CommandInteractionOption & { description: string; required?: boolean };
+
+/**
+ * @description Type for subcommand handler function
+ */
+type SubcommandHandler = (interaction: CommandInteraction, client: Client) => Promise<void>;
 
 /**
  * @interface CommandInterface
@@ -60,6 +66,26 @@ export interface CommandInterface {
    * @param user The user
    */
   startCooldown(user: User): void;
+
+  /**
+   * @description Register a subcommand handler
+   * @param subcommandName The name of the subcommand
+   * @param handler The handler function for the subcommand
+   */
+  registerSubcommand(subcommandName: string, handler: SubcommandHandler): void;
+
+  /**
+   * @description Get a subcommand handler by name
+   * @param subcommandName The name of the subcommand
+   * @returns The handler function or undefined if not found
+   */
+  getSubcommandHandler(subcommandName: string): SubcommandHandler | undefined;
+
+  /**
+   * @description Check if the command has subcommands
+   * @returns True if the command has subcommands registered
+   */
+  hasSubcommands(): boolean;
 }
 
 /**
@@ -73,6 +99,7 @@ abstract class CommandAbstract implements CommandInterface {
   protected _permissions: bigint; /*<! The permissions needed to execute the command */
   protected _cooldownTime: number; /*<! The cooldown time before re-use the command */
   protected _cooldown: Set<User>; /*<! The list of the users in cooldown for the command */
+  protected _subcommands: Map<string, SubcommandHandler>; /*<! Map of subcommand names to their handlers */
 
   /**
    * Constructor to set all attributes of the abstract class
@@ -90,6 +117,7 @@ abstract class CommandAbstract implements CommandInterface {
     this._permissions = permissions;
     this._cooldownTime = cooldownTime;
     this._cooldown = new Set();
+    this._subcommands = new Map();
   }
 
   getName(): string {
@@ -116,7 +144,49 @@ abstract class CommandAbstract implements CommandInterface {
     return this._cooldown;
   }
 
-  abstract run(interaction: CommandInteraction, client: Client): Promise<void>;
+  /**
+   * @description Run the command logic. If subcommands are registered, this will route to the appropriate subcommand.
+   * Otherwise, it calls the abstract handle method.
+   *
+   * @param interaction The interaction
+   * @param client The Client instance
+   */
+  async run(interaction: CommandInteraction, client: Client): Promise<void> {
+    if (interaction.isChatInputCommand()) {
+      const subcommandName = interaction.options.getSubcommand(false);
+
+      if (subcommandName) {
+        const handler = this._subcommands.get(subcommandName);
+        if (handler) {
+          await handler(interaction, client);
+          return;
+        }
+      }
+    }
+
+    await this.handle(interaction, client);
+  }
+
+  /**
+   * @description Abstract method to handle the command logic when no subcommand is used.
+   * This should be implemented by commands that don't use subcommands, or as a fallback.
+   *
+   * @param interaction The interaction
+   * @param client The Client instance
+   */
+  protected abstract handle(interaction: CommandInteraction, client: Client): Promise<void>;
+
+  registerSubcommand(subcommandName: string, handler: SubcommandHandler): void {
+    this._subcommands.set(subcommandName, handler);
+  }
+
+  getSubcommandHandler(subcommandName: string): SubcommandHandler | undefined {
+    return this._subcommands.get(subcommandName);
+  }
+
+  hasSubcommands(): boolean {
+    return this._subcommands.size > 0;
+  }
 
   startCooldown(user: User): void {
     this._cooldown.add(user);

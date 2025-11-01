@@ -19,7 +19,7 @@ class Ping extends CommandAbstract {
    * @param interaction The interaction
    * @param _ The Client instance (unused)
    */
-  async run(interaction: CommandInteraction, _: Client): Promise<void> {
+  protected async handle(interaction: CommandInteraction, _: Client): Promise<void> {
     await interaction.reply('Pong!');
   }
 }
