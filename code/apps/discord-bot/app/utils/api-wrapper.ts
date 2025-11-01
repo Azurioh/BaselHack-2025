@@ -154,3 +154,28 @@ export const askLocalQuestionToAPI = async (
   console.log(data);
   return data.data;
 };
+
+export const answerQuestion = async (
+  client: Client,
+  discordId: string,
+  questionId: string,
+  answer: string,
+): Promise<void> => {
+  const token = client.getSession(discordId);
+
+  const response = await fetch(`${environment.API_URL}/questions/v1/${questionId}/answer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : { discord_secret: environment.API_SECRET }),
+    },
+    body: JSON.stringify({ answer, ...(token ? {} : { discordUserId: discordId }) }),
+  });
+
+  if (!response.ok) {
+    console.error(JSON.stringify(await response.json(), null, 2));
+    throw new Error('Failed to answer question to the API');
+  }
+
+  console.log(await response.json());
+};

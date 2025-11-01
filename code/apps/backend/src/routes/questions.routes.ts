@@ -50,14 +50,16 @@ export default async (app: FastifyInstance) => {
   app.route({
     method: 'POST',
     url: '/v1/:question_id/answer',
-    handler: questionsController.createAnswer.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.createAnswer(request, reply),
+    preHandler: [authMiddleware({ optional: true })],
   });
   app.route({
     method: 'GET',
     url: '/v1/:question_id/answer',
     // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
     handler: (request: any, reply) => questionsController.findAnswerByQuestionId(request, reply),
-    preHandler: [authMiddleware()],
+    // preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',

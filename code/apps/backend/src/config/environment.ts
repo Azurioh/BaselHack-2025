@@ -19,6 +19,7 @@ export interface Environment {
   JWT_RESET_PASSWORD_SECRET: string;
 
   ADMIN_SECRET: string;
+  DISCORD_SECRET: string;
 }
 
 const variables: { [key: string]: string | undefined } = {
@@ -31,6 +32,7 @@ const variables: { [key: string]: string | undefined } = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
   JWT_RESET_PASSWORD_SECRET: process.env.JWT_RESET_PASSWORD_SECRET,
   ADMIN_SECRET: process.env.ADMIN_SECRET,
+  DISCORD_SECRET: process.env.DISCORD_SECRET,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -61,4 +63,5 @@ export const environment: Environment = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
   JWT_RESET_PASSWORD_SECRET: process.env.JWT_RESET_PASSWORD_SECRET as string,
   ADMIN_SECRET: process.env.ADMIN_SECRET as string,
+  DISCORD_SECRET: process.env.DISCORD_SECRET as string,
 };

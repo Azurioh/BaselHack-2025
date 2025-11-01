@@ -16,6 +16,7 @@ class Client {
   private _sessions: Map<string, string> /*<! A map to store all sessions */;
   private _modals: Map<string, ModalAbstract> /*<! A map to store all modals */;
   private _buttons: Map<string, ButtonAbstract> /*<! A map to store all buttons */;
+  private _questions: Map<string, string> /*<! A map to store all questions */;
   /**
    * Constructor used to set all private attributes
    */
@@ -28,6 +29,7 @@ class Client {
     this._sessions = new Map();
     this._modals = new Map();
     this._buttons = new Map();
+    this._questions = new Map();
   }
 
   /**
@@ -69,6 +71,22 @@ class Client {
 
   deleteSession(discordId: string): void {
     this._sessions.delete(discordId);
+  }
+
+  getQuestions(): Map<string, string> {
+    return this._questions;
+  }
+
+  addQuestion(channelId: string, questionId: string): void {
+    this._questions.set(channelId, questionId);
+  }
+
+  getQuestion(channelId: string): string | undefined {
+    return this._questions.get(channelId);
+  }
+
+  deleteQuestion(channelId: string): void {
+    this._questions.delete(channelId);
   }
 
   /**

@@ -2,7 +2,8 @@ import type { ObjectId } from 'mongodb';
 
 export type Answer = {
   id: ObjectId;
-  userId: ObjectId;
+  userId?: ObjectId;
+  discordUserId?: string;
   questionId: ObjectId;
   answer: string;
   createdAt: Date;

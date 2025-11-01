@@ -10,12 +10,14 @@ export interface Environment {
   DISCORD_TOKEN: string /*!< Token of the discord client */;
   API_URL: string /*!< URL of the API */;
   WEBSITE_URL: string /*!< URL of the website */;
+  API_SECRET: string /*!< Secret of the API */;
 }
 
 const variables: { [key: string]: string | undefined } = {
   DISCORD_TOKEN: process.env.DISCORD_TOKEN,
   API_URL: process.env.API_URL,
   WEBSITE_URL: process.env.WEBSITE_URL,
+  API_SECRET: process.env.API_SECRET,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -33,4 +35,5 @@ export const environment: Environment = {
   DISCORD_TOKEN: process.env.DISCORD_TOKEN as string,
   API_URL: process.env.API_URL as string,
   WEBSITE_URL: process.env.WEBSITE_URL as string,
+  API_SECRET: process.env.API_SECRET as string,
 };

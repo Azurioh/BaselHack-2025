@@ -14,6 +14,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 interface AuthMiddlewareParams {
   refreshToken?: boolean;
   adminOnly?: boolean;
+  optional?: boolean;
 }
 
 /**
@@ -71,6 +72,9 @@ export const authMiddleware = (options?: AuthMiddlewareParams) => {
 
       request.user = decoded;
     } catch (error) {
+      if (options?.optional) {
+        return;
+      }
       if (error instanceof ApiError) {
         throw error;
       }

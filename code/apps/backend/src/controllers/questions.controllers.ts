@@ -1,5 +1,7 @@
+import { Errors } from '@baselhack/shared/enums/errors';
 import { HttpStatusCode } from '@baselhack/shared/enums/http-status';
 import type { Answer, CreateLocalQuestionBody, Question } from '@baselhack/shared/types/questions.types';
+import { environment } from '@config/environment';
 import type { QuestionsService } from '@services/questions.service';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { type Filter, ObjectId } from 'mongodb';
@@ -58,15 +60,25 @@ export class QuestionsController {
 
   async createAnswer(
     request: FastifyRequest<{
+      Headers: { discord_secret?: string };
       Params: { question_id: string };
-      Body: Omit<Answer, 'userId' | 'questionId' | 'id'> & { userId: string; questionId: string };
+      Body: { discordUserId?: string; answer: string };
     }>,
     reply: FastifyReply,
   ) {
+    if (request.body.discordUserId && request.headers.discord_secret !== environment.DISCORD_SECRET) {
+      return reply.error('Unauthorized', HttpStatusCode.unauthorized, Errors.UNAUTHORIZED);
+    }
+
+    let userId: string | undefined;
+    if (request.user?.id) {
+      userId = request.user.id;
+    }
+
+    const { discordUserId, answer: answerStr } = request.body;
     const answer = await this.questionsService.createAnswer(request.params.question_id, {
-      ...request.body,
-      userId: new ObjectId(request.body.userId),
-      questionId: new ObjectId(request.body.questionId),
+      answer: answerStr,
+      ...(userId ? { userId } : { discordUserId }),
     });
 
     reply.success(answer, HttpStatusCode.created);

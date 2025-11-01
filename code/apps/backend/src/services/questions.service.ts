@@ -60,9 +60,19 @@ export class QuestionsService {
     return deletedQuestion;
   }
 
-  async createAnswer(questionId: string, answer: Omit<Answer, 'id'>) {
+  async createAnswer(
+    questionId: string,
+    answer: {
+      userId?: string;
+      discordUserId?: string;
+      answer: string;
+    },
+  ) {
+    const { userId, discordUserId, ...restAnswer } = answer;
     const data: Answer = {
-      ...answer,
+      ...restAnswer,
+      questionId: new ObjectId(questionId),
+      ...(userId ? { userId: new ObjectId(userId) } : { discordUserId }),
       id: new ObjectId(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -121,8 +131,18 @@ export class QuestionsService {
       updatedAt: new Date(),
     };
 
-    await this.questionsRepository.createQuestion(data);
+    const result = await this.questionsRepository.createQuestion(data);
 
-    return { question: { ...data, _id: new ObjectId() }, notFoundUserIds };
+    if (!result.insertedId) {
+      throw new Error('Failed to create question');
+    }
+
+    const createdQuestion = await this.questionsRepository.findQuestionById(result.insertedId.toString());
+
+    if (!createdQuestion) {
+      throw new Error('Failed to retrieve created question');
+    }
+
+    return { question: createdQuestion, notFoundUserIds };
   }
 }

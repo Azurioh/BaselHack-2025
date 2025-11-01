@@ -46,7 +46,7 @@ export class UserService {
     const questions = await this.questionsRepository.listAllQuestions({
       $or: [{ userAccess: new ObjectId(id) }, { roleAccess: role }],
     });
-    const answers = questions.map((question) => question.answers.find((answer) => answer.userId.toString() === id));
+    const answers = questions.map((question) => question.answers.find((answer) => answer.userId?.toString() === id));
 
     return answers;
   }
