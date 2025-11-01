@@ -60,7 +60,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           onClick={() => setIsModalOpen(true)}
         >
           <div className="flex gap-2 !mb-3">
-            <Tag color="#2F80ED">{topic}</Tag>
+            <Tag color="blue">{topic}</Tag>
             {isAnonymous && (
               <Tag className="bg-text text-white border-text">
                 Anonymous
