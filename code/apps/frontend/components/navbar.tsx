@@ -19,6 +19,8 @@ interface NavItem {
 export function Navbar() {
   const { width } = useWindowDimensions();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [logoHovered, setLogoHovered] = useState(false);
   const isMobile = width < 768;
 
   const navItems: NavItem[] = [
@@ -71,20 +73,30 @@ export function Navbar() {
   // Desktop View
   return (
     <View style={styles.appbarDesktop}>
-      <View style={styles.leftSection}>
-        <Link href="/" asChild>
-          <Pressable>
-            <Appbar.Action icon="check-circle" color={COLORS.accent} size={24} />
-          </Pressable>
-        </Link>
-        <Text style={styles.logoText}>BaselHack</Text>
-      </View>
+      <Link href="/" asChild>
+        <Pressable
+          style={logoHovered ? styles.logoHovered : styles.leftSection}
+          onMouseEnter={() => setLogoHovered(true)}
+          onMouseLeave={() => setLogoHovered(false)}
+        >
+          <Appbar.Action icon="check-circle" color={COLORS.accent} size={24} />
+          <Text style={logoHovered ? styles.logoTextHovered : styles.logoText}>
+            BaselHack
+          </Text>
+        </Pressable>
+      </Link>
 
       <View style={styles.navContainer}>
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} asChild>
-            <Pressable style={({ pressed }) => [styles.navLink, pressed && styles.navLinkPressed]}>
-              <Text style={styles.navLinkText}>{item.name}</Text>
+            <Pressable
+              style={hoveredNav === item.href ? styles.navLinkHovered : styles.navLink}
+              onMouseEnter={() => setHoveredNav(item.href)}
+              onMouseLeave={() => setHoveredNav(null)}
+            >
+              <Text style={hoveredNav === item.href ? styles.navLinkTextHovered : styles.navLinkText}>
+                {item.name}
+              </Text>
             </Pressable>
           </Link>
         ))}
@@ -126,11 +138,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  logoHovered: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    backgroundColor: '#F0F0F0',
   },
   logoText: {
     fontSize: 18,
     fontWeight: '600',
     color: COLORS.text,
+  },
+  logoTextHovered: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.accent,
   },
   navContainer: {
     flexDirection: 'row',
@@ -141,13 +170,22 @@ const styles = StyleSheet.create({
   navLink: {
     paddingHorizontal: 12,
     paddingVertical: 8,
+    borderRadius: 6,
   },
-  navLinkPressed: {
-    opacity: 0.6,
+  navLinkHovered: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: '#F0F0F0',
   },
   navLinkText: {
     fontSize: 14,
     color: COLORS.textSecondary,
+    fontWeight: '500',
+  },
+  navLinkTextHovered: {
+    fontSize: 14,
+    color: COLORS.accent,
     fontWeight: '500',
   },
 });
