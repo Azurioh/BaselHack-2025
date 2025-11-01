@@ -8,7 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "build",
-    "rootDir": "app",
+    "typeRoots": ["./node_modules/@types", "./app/types"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["app/*"],
