@@ -1,18 +1,26 @@
 FROM node:lts-alpine
 WORKDIR /app
 
+# Copy root package.json for workspace dependencies
 COPY package.json ./
 COPY packages ./packages
 
+# Copy backend package.json
 COPY apps/backend/package.json ./apps/backend/
+
+# Install dependencies (npm workspaces will install all workspace dependencies)
 RUN npm install
 
+# Copy backend source code
 COPY apps/backend ./apps/backend
 
 WORKDIR /app/apps/backend
 
+# Build the TypeScript application
 RUN npm run build
 
-EXPOSE ${PORT}
+# Expose port (default 3000, but can be overridden via environment)
+EXPOSE 3000
 
+# Start the production server
 CMD ["npm", "start"]

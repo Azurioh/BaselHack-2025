@@ -13,6 +13,7 @@
     "tsc-alias": "^1.8.10"
   },
   "dependencies": {
+    "@baselhack/shared": "*",
     "@fastify/cors": "^11.0.1",
     "@fastify/mongodb": "^9.0.2",
     "@fastify/rate-limit": "^10.3.0",
