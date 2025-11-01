@@ -22,9 +22,9 @@ function App() {
           { userInformation?.role === 'admin' &&
             <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
           }
-          <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
           <Route path="/history" element={<ProtectedRoute element={<History />} />} />
         </Route>
+        <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
