@@ -2,7 +2,7 @@ import { Form, Input, Button, message, Select, Divider, Switch, DatePicker } fro
 import { QuestionCircleOutlined, TagOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import AuthCard from '../../components/AuthCard'
+import AuthCard from '../../Components/AuthCard'
 import { createQuestion } from '../../api/questions'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -13,6 +13,7 @@ type QuestionFormValues = {
   category?: string
   anonymousAnswers?: boolean
   endDate?: string
+  answers?: []
 }
 
 export default function CreateQuestion() {
@@ -52,6 +53,7 @@ export default function CreateQuestion() {
         description: values.description || '',
         category: values.category,
         anonymous: values.anonymousAnswers || false,
+        answers: [],
       }
 
       if (values.endDate) {

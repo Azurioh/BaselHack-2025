@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Dropdown, MenuProps } from 'antd';
+import { Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 
 export const Navbar = () => {
   const navigate = useNavigate();

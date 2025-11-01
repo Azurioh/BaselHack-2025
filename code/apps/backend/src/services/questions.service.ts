@@ -29,17 +29,17 @@ export class QuestionsService {
     const answeredQuestions: Question[] = [];
 
     for (const question of questions) {
-      if (!question.answers || question.answers.length == 0) {
+      if (!question.answers || question.answers.length === 0) {
         questionsToBeAnswered.push(question);
         continue;
       }
-      if (question.answers.find((answer) => answer.userId.toString() === id)) {
+      if (question.answers.find((answer) => answer.userId?.toString() === id)) {
         answeredQuestions.push(question);
       } else {
         questionsToBeAnswered.push(question);
       }
     }
-    return {questionsToBeAnswered, answeredQuestions};
+    return { questionsToBeAnswered, answeredQuestions };
   }
 
   async findQuestionById(id: string) {
@@ -144,5 +144,23 @@ export class QuestionsService {
     }
 
     return { question: createdQuestion, notFoundUserIds };
+  }
+
+  async generateConcense(questionId: string) {
+    const question = await this.findQuestionById(questionId);
+
+    if (!question) {
+      throw new Error('Question not found');
+    }
+
+    if (question.answers.length === 0) {
+      throw new Error('Question has no answers');
+    }
+
+    let concense = await this.questionsRepository.generateConcense(question);
+    concense = concense.replace(/```json\n|```/g, '');
+    concense = JSON.parse(concense);
+
+    return concense;
   }
 }

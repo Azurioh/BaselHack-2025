@@ -85,4 +85,11 @@ export default async (app: FastifyInstance) => {
     handler: (request: any, reply) => questionsController.createLocalQuestion(request, reply),
     preHandler: [authMiddleware()],
   });
+  app.route({
+    method: 'GET',
+    url: '/v1/:question_id/concense',
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.generateConcense(request, reply),
+    // preHandler: [authMiddleware({ adminOnly: true })],
+  });
 };

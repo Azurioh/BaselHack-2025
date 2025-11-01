@@ -6,9 +6,9 @@ import Register from './pages/Auth/Register'
 import NotFound from './pages/NotFound'
 import History from './pages/Questions/History'
 import { useAuth } from './context/AuthContext'
-import { ProtectedRoute } from './components/ProtectedRoute'
+import { ProtectedRoute } from './Components/ProtectedRoute'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
-import { Layout } from './components/Layout'
+import { Layout } from './Components/Layout'
 import './App.css'
 
 function App() {

@@ -1,5 +1,7 @@
 import type { Answer, Question } from '@baselhack/shared/types/questions.types';
+import { environment } from '@config/environment';
 import { MongoCollections } from '@enums/mongo-collections-enums';
+import { Mistral } from '@mistralai/mistralai';
 import { type Db, type Filter, ObjectId } from 'mongodb';
 
 export class QuestionsRepository {
@@ -88,5 +90,41 @@ export class QuestionsRepository {
       );
 
     return deletedAnswer;
+  }
+
+  async generateConcense(question: Question): Promise<string> {
+    const mistral = new Mistral({ apiKey: environment.MISTRAL_API_KEY });
+    let buffer = '';
+
+    const stream = await mistral.agents.stream({
+      agentId: environment.MISTRAL_AGENT_ID,
+      messages: [
+        {
+          role: 'user',
+          content: `This is the main question: ${question.title} and this is the question description: ${question.description}
+
+          This is the answers: \n===${question.answers.map((answer) => answer.answer).join('\n===\n')}`,
+        },
+      ],
+    });
+
+    for await (const chunk of stream) {
+      buffer += chunk.data.choices[0].delta.content;
+    }
+
+    return buffer;
+    // const response = await mistral.agents.complete({
+    //   agentId: environment.MISTRAL_AGENT_ID,
+    //   messages: [
+    //     {
+    //       role: 'user',
+    //       content: `This is the main question: ${question.title} and this is the question description: ${question.description}
+
+    //       This is the answers: \n===${question.answers.map((answer) => answer.answer).join('\n===\n')}`,
+    //     },
+    //   ],
+    // });
+
+    // return response.choices[0].message.content as string;
   }
 }
