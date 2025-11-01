@@ -6,12 +6,12 @@ import type { UserRoles } from '@baselhack/shared/enums/users-enums';
  * @description User type
  */
 export type User = {
-  name: string;
+  name?: string;
   email: string;
   password: string;
-  role: UserRoles;
-  category: string;
+  role?: UserRoles;
+  category?: string;
   discordId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
