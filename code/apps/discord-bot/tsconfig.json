@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "build",
+    "rootDir": "app",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["app/*"],
+      "@/abstractCommand": ["app/commands"],
+      "@/abstractEvent": ["app/events"],
+      "@commands/*": ["app/commands/*"],
+      "@events/*": ["app/events/*"],
+      "@utils/*": ["app/utils/*"],
+      },
+  },
+}
