@@ -62,7 +62,7 @@ export default async (app: FastifyInstance) => {
     url: '/v1/:question_id/answers',
     // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
     handler: (request: any, reply) => questionsController.listAnswersByQuestionId(request, reply),
-    preHandler: [authMiddleware({ adminOnly: true })],
+    preHandler: [authMiddleware()],
   });
   app.route({
     method: 'PUT',
