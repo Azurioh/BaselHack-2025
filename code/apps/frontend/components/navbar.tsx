@@ -4,11 +4,11 @@ import { Appbar, Menu, Button, Text } from 'react-native-paper';
 import { useState } from 'react';
 
 const COLORS = {
-  background: '#0A0A0A',
-  text: '#FFFFFF',
-  textSecondary: '#A0A0A0',
+  background: '#FFFFFF',
+  text: '#000000',
+  textSecondary: '#666666',
   accent: '#3B82F6',
-  border: '#1F1F1F',
+  border: '#E5E5E5',
 };
 
 interface NavItem {
