@@ -28,10 +28,11 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav style={{ backgroundColor: '#ffffff' }} className="border-b border-gray-200 px-6 h-16 flex items-center justify-between">
+    <nav className="bg-white border-b border-gray-200 px-6 h-16 flex items-center justify-between">
       <button
         onClick={() => navigate('/')}
-        className="text-xl font-bold text-black !pl-8 hover:text-gray-800 transition-colors"
+        className="text-xl font-bold text-text !pl-8 hover:text-primary transition-colors"
+        style={{ fontFamily: 'var(--font-heading)' }}
       >
         BaselHack
       </button>
@@ -41,7 +42,8 @@ export const Navbar = () => {
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 p-6 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+            className="text-text font-semibold text-lg hover:text-primary hover:bg-background p-6 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+            style={{ fontFamily: 'var(--font-body)' }}
           >
             {item.name}
           </button>
@@ -54,9 +56,9 @@ export const Navbar = () => {
           placement="bottomRight"
           trigger={['click']}
         >
-          <button className="flex items-center gap-2 text-black hover:bg-gray-100 px-3 py-2 rounded-lg transition-colors">
+          <button className="flex items-center gap-2 text-text hover:bg-background px-3 py-2 rounded-lg transition-colors font-semibold" style={{ fontFamily: 'var(--font-body)' }}>
             <UserOutlined className="text-lg" />
-            <span className="font-medium">{userInformation?.name}</span>
+            <span>{userInformation?.name}</span>
           </button>
         </Dropdown>
       </div>

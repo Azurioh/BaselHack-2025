@@ -71,7 +71,7 @@ export default function CreateQuestion() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-background min-h-screen">
       <AuthCard title="Create a Question" subtitle="Ask your question to the community">
         <Form
           form={form}
@@ -80,7 +80,7 @@ export default function CreateQuestion() {
           autoComplete="off"
         >
           <Form.Item
-            label={<span className="font-semibold text-gray-700">Question Title</span>}
+            label={<span className="font-weight-semibold color-text">Question Title</span>}
             name="title"
             rules={[
               { required: true, message: 'Please enter a title' },
@@ -91,7 +91,7 @@ export default function CreateQuestion() {
             ]}
           >
             <Input
-              prefix={<QuestionCircleOutlined className="text-blue-500" />}
+              prefix={<QuestionCircleOutlined className="color-text font-weight-light" />}
               placeholder="What is your question?"
               size="large"
               className="rounded-md"
@@ -99,7 +99,7 @@ export default function CreateQuestion() {
           </Form.Item>
 
           <Form.Item
-            label={<span className="font-semibold text-gray-700">Question Description</span>}
+            label={<span className="font-weight-light color-text">Question Description</span>}
             name="description"
           >
             <Input.TextArea
@@ -111,7 +111,7 @@ export default function CreateQuestion() {
           </Form.Item>
 
           <Form.Item
-            label={<span className="font-semibold text-gray-700">Category</span>}
+            label={<span className="font-weight-light color-text">Category</span>}
             name="category"
             rules={[
               { required: true, message: 'Please select a category' },
@@ -121,7 +121,7 @@ export default function CreateQuestion() {
               placeholder="Select a category"
               size="large"
               className="rounded-md"
-              suffixIcon={<TagOutlined className="text-blue-500" />}
+              suffixIcon={<TagOutlined className="color-text" />}
             >
               {categories.map((category, index) => (
                 <Select.Option key={category.id || `category-${index}`} value={category.name}>
@@ -133,10 +133,10 @@ export default function CreateQuestion() {
 
           <Divider className="my-6" />
 
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Settings</h3>
+          <h3 className="text-lg font-weight-light color-text mb-4">Settings</h3>
 
           <Form.Item
-            label={<span className="font-semibold text-gray-700">Anonymous Answers</span>}
+            label={<span className="font-weight-light color-text">Anonymous Answers</span>}
             name="anonymousAnswers"
             valuePropName="checked"
             initialValue={false}
@@ -145,7 +145,7 @@ export default function CreateQuestion() {
           </Form.Item>
 
           <Form.Item
-            label={<span className="font-semibold text-gray-700">End Date & Time</span>}
+            label={<span className="font-weight-light color-text">End Date & Time</span>}
             name="endDate"
           >
             <DatePicker
@@ -166,7 +166,7 @@ export default function CreateQuestion() {
               size="large"
               loading={loading}
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 font-semibold rounded-md"
+              className="color-secondary hover:color-accent font-weight-light rounded-md"
             >
               Create Question
             </Button>

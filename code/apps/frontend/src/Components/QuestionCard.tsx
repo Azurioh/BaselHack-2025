@@ -60,18 +60,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           onClick={() => setIsModalOpen(true)}
         >
           <div className="flex gap-2 !mb-3">
-            <Tag color="blue">{topic}</Tag>
+            <Tag color="#2F80ED">{topic}</Tag>
             {isAnonymous && (
-              <Tag className="bg-gray-600 text-white border-gray-600">
+              <Tag className="bg-text text-white border-text">
                 Anonymous
               </Tag>
             )}
           </div>
-          <h3 className="m-0 mb-4 text-xl font-bold text-black">{title}</h3>
-          <div className="mb-8 line-clamp-3 overflow-hidden text-ellipsis">
+          <h3 className="m-0 mb-4 text-text" style={{ fontSize: 'var(--font-size-h4)', fontFamily: 'var(--font-heading)', fontWeight: 'var(--font-weight-bold)' }}>{title}</h3>
+          <div className="mb-8 line-clamp-3 overflow-hidden text-ellipsis text-text" style={{ fontFamily: 'var(--font-body)', opacity: 0.8 }}>
             {children}
           </div>
-          <div className="flex gap-6 items-center text-gray-600 text-sm mb-8 !mt-4">
+          <div className="flex gap-6 items-center text-text text-sm mb-8 !mt-4" style={{ fontFamily: 'var(--font-body)', opacity: 0.7 }}>
             <div className="flex items-center gap-1.5">
               <span><UsergroupAddOutlined /> </span>
               <span>{responseCount} {responseCount === 1 ? 'answer' : 'answers'}</span>
@@ -99,18 +99,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         width={800}
       >
         <div className="flex gap-2 mb-4">
-          <Tag color="blue">{topic}</Tag>
+          <Tag color="#2F80ED">{topic}</Tag>
           {isAnonymous && (
-            <Tag className="bg-gray-600 text-white border-gray-600">
+            <Tag className="bg-text text-white border-text">
               Anonymous
             </Tag>
           )}
         </div>
-        <div className="mb-6">
+        <div className="mb-6 text-text" style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--font-size-base)' }}>
           {children}
         </div>
 
-        <div className="flex gap-6 items-center text-gray-600 text-sm mb-6">
+        <div className="flex gap-6 items-center text-text text-sm mb-6" style={{ fontFamily: 'var(--font-body)', opacity: 0.7 }}>
           <div className="flex items-center gap-1.5">
             <span><UsergroupAddOutlined /> </span>
             <span>{responseCount} {responseCount === 1 ? 'answer' : 'answers'}</span>
@@ -128,7 +128,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         <div>
           {showResponseField ? (
             <div className="mb-4">
-              <h3 className="text-mg font-semibold mb-3">Respond to question:</h3>
+              <h3 className="text-text mb-3" style={{ fontSize: 'var(--font-size-h4)', fontFamily: 'var(--font-heading)', fontWeight: 'var(--font-weight-semibold)' }}>Respond to question:</h3>
               <TextArea
                 rows={3}
                 placeholder="Write your response..."
@@ -171,14 +171,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 </Button>
             </div>
           ) : (
-            <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
-              <h3 className="text-lg font-semibold mb-4 !ml-2">Analysis</h3>
-              <div className="mb-3">
-                <strong className="!ml-2">Sentiment:</strong> <Tag color="green">Positive (78%)</Tag>
+            <div className="p-4 bg-background rounded-lg border border-secondary">
+              <h3 className="text-text mb-4 !ml-2" style={{ fontSize: 'var(--font-size-h3)', fontFamily: 'var(--font-heading)', fontWeight: 'var(--font-weight-semibold)' }}>Analysis</h3>
+              <div className="mb-3" style={{ fontFamily: 'var(--font-body)' }}>
+                <strong>Sentiment:</strong> <Tag color="#56CCF2">Positive (78%)</Tag>
               </div>
-              <div>
-                <strong className="!ml-2">Summary:</strong>
-                <p className="!mt-2 text-gray-600 !ml-2">
+              <div style={{ fontFamily: 'var(--font-body)' }}>
+                <strong>Summary:</strong>
+                <p className="mt-2 text-text" style={{ opacity: 0.8 }}>
                   The responses show strong positive sentiment with a focus on innovation and team collaboration. 
                   Participants are generally satisfied and engaged with the topic.
                 </p>
