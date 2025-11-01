@@ -46,8 +46,13 @@ export const Navbar = () => {
             key={item.path}
             onClick={() => navigate(item.path)}
             className={navbarTextStyle(item.path)}
-            style={{ fontFamily: 'var(--font-body)' }}>
-            {item.name}
+            style={{ fontFamily: 'var(--font-body)' }}
+          >
+            {item.name != 'Dashboard' || userInformation?.role == 'admin' ? (
+              item.name
+            ) : (
+              null
+            )}
           </button>
         ))}
       </div>
