@@ -1,7 +1,7 @@
 import type { Answer, CreateLocalQuestionBody, Question } from '@baselhack/shared/types/questions.types';
 import type { QuestionsRepository } from '@repositories/questions.repository';
 import type { UserRepository } from '@repositories/user.repository';
-import { type Filter, ObjectId } from 'mongodb';
+import { type Filter, ObjectId, type WithId } from 'mongodb';
 
 export class QuestionsService {
   private questionsRepository: QuestionsRepository;
@@ -86,7 +86,7 @@ export class QuestionsService {
   async createLocalQuestion(
     question: CreateLocalQuestionBody,
     createdBy: string,
-  ): Promise<{ question: Question; notFoundUserIds: string[] }> {
+  ): Promise<{ question: WithId<Question>; notFoundUserIds: string[] }> {
     const userAccess = await this.userRepository.listAllUsers({ discordId: { $in: question.memberDiscordIds } });
     let notFoundUserIds: string[] = [];
 
@@ -110,6 +110,6 @@ export class QuestionsService {
 
     await this.questionsRepository.createQuestion(data);
 
-    return { question: data, notFoundUserIds };
+    return { question: { ...data, _id: new ObjectId() }, notFoundUserIds };
   }
 }
