@@ -149,8 +149,14 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen !p-8 flex flex-col items-center">
-      <div className="my-12 w-full flex justify-center">
+    <div className="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen !p-8 flex flex-col items-center gap-8">
+      <Button
+        onClick={() => navigate('/questions/create')}
+        className='!bg-primary !text-white !self-end'
+      >
+        Create question +
+      </Button>
+      <div className="my-12 w-full flex justify-center ">
         <div className="bg-white/90 !p-6 rounded-xl shadow-md max-w-7xl w-full">
           <div className="flex flex-col lg:flex-row gap-4 items-center mb-6">
             <Input
