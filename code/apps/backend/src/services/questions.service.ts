@@ -29,7 +29,7 @@ export class QuestionsService {
     const answeredQuestions: Question[] = [];
 
     for (const question of questions) {
-      if (question.answers.length == 0) {
+      if (!question.answers || question.answers.length == 0) {
         questionsToBeAnswered.push(question);
         continue;
       }
