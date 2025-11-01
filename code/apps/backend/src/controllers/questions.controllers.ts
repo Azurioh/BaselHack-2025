@@ -47,8 +47,8 @@ export class QuestionsController {
     reply.success(answer, HttpStatusCode.created);
   }
 
-  async findAnswerByQuestionId(request: FastifyRequest<{ Params: { question_id: string } }>, reply: FastifyReply) {
-    const answer = await this.questionsService.findAnswerByQuestionId(request.params.question_id);
+  async findAnswerByQuestionId(request: FastifyRequest<{ Params: { question_id: string },  }>, reply: FastifyReply) {
+    const answer = await this.questionsService.findAnswerByQuestionId(request.params.question_id, request.user.id);
 
     reply.success(answer, HttpStatusCode.ok);
   }

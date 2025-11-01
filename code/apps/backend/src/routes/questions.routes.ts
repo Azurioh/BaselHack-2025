@@ -1,4 +1,5 @@
 import { QuestionsController } from '@controllers/questions.controllers';
+import { authMiddleware } from '@middlewares/auth-middleware';
 import { QuestionsRepository } from '@repositories/questions.repository';
 import { QuestionsService } from '@services/questions.service';
 import type { FastifyInstance } from 'fastify';
@@ -29,12 +30,16 @@ export default async (app: FastifyInstance) => {
   app.route({
     method: 'PUT',
     url: '/v1/questions/:question_id',
-    handler: questionsController.updateQuestion.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.updateQuestion(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
   });
   app.route({
     method: 'DELETE',
     url: '/v1/questions/:question_id',
-    handler: questionsController.deleteQuestion.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.deleteQuestion(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
   });
   app.route({
     method: 'POST',
@@ -44,12 +49,16 @@ export default async (app: FastifyInstance) => {
   app.route({
     method: 'GET',
     url: '/v1/questions/:question_id/answer',
-    handler: questionsController.findAnswerByQuestionId.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.findAnswerByQuestionId(request, reply),
+    preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',
     url: '/v1/questions/:question_id/answers',
-    handler: questionsController.listAnswersByQuestionId.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.listAnswersByQuestionId(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
   });
   app.route({
     method: 'PUT',

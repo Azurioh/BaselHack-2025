@@ -56,8 +56,8 @@ export class QuestionsService {
     return newAnswer;
   }
 
-  async findAnswerByQuestionId(questionId: string) {
-    const answer = await this.questionsRepository.findAnswerByQuestionId(questionId);
+  async findAnswerByQuestionId(questionId: string, userId: string) {
+    const answer = await this.questionsRepository.findAnswerByQuestionId(questionId, userId);
 
     return answer;
   }

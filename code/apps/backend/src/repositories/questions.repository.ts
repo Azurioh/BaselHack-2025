@@ -55,9 +55,9 @@ export class QuestionsRepository {
     return newAnswer;
   }
 
-  async findAnswerByQuestionId(questionId: string) {
+  async findAnswerByQuestionId(questionId: string, userId: string) {
     const answer = await this.db.collection<Question>(MongoCollections.QUESTIONS)
-      .findOne({ _id: new ObjectId(questionId), "answers.userId": "69052f552bfbd13168451eb6" });
+      .findOne({ _id: new ObjectId(questionId), "answers.userId": userId });
 
     return answer?.answers[0];
   }
@@ -71,7 +71,10 @@ export class QuestionsRepository {
   async updateAnswer(questionId: string, answerId: string, answer: Answer) {
     const updatedAnswer = await this.db
       .collection<Question>(MongoCollections.QUESTIONS)
-      .updateOne({ _id: new ObjectId(questionId), 'answers._id': answerId }, { $set: { answer } });
+      .updateOne(
+        { _id: new ObjectId(questionId), "answers.id": answerId },
+        { $set: { "answers.$.answer": answer.answer } }
+      );
 
     return updatedAnswer;
   }
@@ -79,7 +82,10 @@ export class QuestionsRepository {
   async deleteAnswer(questionId: string, answerId: string) {
     const deletedAnswer = await this.db
       .collection<Question>(MongoCollections.QUESTIONS)
-      .deleteOne({ _id: new ObjectId(questionId), 'answers._id': answerId });
+      .updateOne(
+        { _id: new ObjectId(questionId) },
+        { $pull: { answers: { id: answerId } } }
+      );
 
     return deletedAnswer;
   }
