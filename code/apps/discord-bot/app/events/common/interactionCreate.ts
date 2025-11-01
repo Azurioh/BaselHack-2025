@@ -22,7 +22,14 @@ class InteractionCreate extends EventAbstract {
 
     if (!file) {
       if (interaction.isChatInputCommand()) {
-        await interaction.reply({ content: 'Interaction inconnu, veuillez contacter les développeurs.' });
+        await interaction.reply({ content: 'Unknown command, please contact the developers.' });
+      } else if (interaction.isModalSubmit()) {
+        const modal = client.getModals().get(interaction.customId);
+        if (modal) {
+          await modal.run(interaction, client);
+        } else {
+          await interaction.reply({ content: 'Unknown modal, please contact the developers.' });
+        }
       }
       return;
     }
@@ -39,7 +46,7 @@ class InteractionCreate extends EventAbstract {
     if (interaction.isChatInputCommand()) {
       if (!interaction.guild) {
         await interaction.reply({
-          content: 'Les commandes ne peuvent être exécuté uniquement sur un serveur Discord.',
+          content: 'Commands can only be executed on a Discord server.',
         });
         return null;
       }
