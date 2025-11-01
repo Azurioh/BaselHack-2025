@@ -30,50 +30,35 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     <div className="w-full flex justify-center p-4">
       <Card
         bordered={true}
-        style={{ 
-          width: '100%', 
-          maxWidth: '800px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)',
-          borderRadius: '8px'
-        }}
+        className="w-full max-w-3xl shadow-md rounded-lg"
       >
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+        <div className="flex gap-2 mb-3">
           <Tag color="blue">{topic}</Tag>
           {isAnonymous && (
-            <Tag style={{
-              backgroundColor: 'darkgray',
-              color: 'white',
-            }}>
+            <Tag className="bg-gray-600 text-white border-gray-600">
               Anonymous
             </Tag>
           )}
         </div>
-        <h3 style={{ margin: '0 0 16px 0', fontSize: '20px', fontWeight: 'bold', color: 'black' }}>{title}</h3>
-        <p style={{ marginBottom: '16px' }}>{children}</p>
-        <div style={{
-          display: 'flex',
-          gap: '24px',
-          alignItems: 'center',
-          color: '#666',
-          fontSize: '14px',
-          marginBottom: '16px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <h3 className="m-0 mb-4 text-xl font-bold text-black">{title}</h3>
+        <p className="mb-4">{children}</p>
+        <div className="flex gap-6 items-center text-gray-600 text-sm mb-4">
+          <div className="flex items-center gap-1.5">
             <span><UsergroupAddOutlined /> </span>
             <span>{responseCount} {responseCount === 1 ? 'answer' : 'answers'}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div className="flex items-center gap-1.5">
             <span><GlobalOutlined /></span>
             <span>{targetAudience}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div className="flex items-center gap-1.5">
             <span><CalendarOutlined /> </span>
             <span>{createdAt}</span>
           </div>
         </div>
 
         <div>
-          <div style={{ display: 'flex', gap: '12px', marginBottom: showResponseField || showAnalysis ? '12px' : '0' }}>
+          <div className={`flex gap-3 ${showResponseField || showAnalysis ? 'mb-3' : ''}`}>
             <Button
               type="primary"
               onClick={() => {
@@ -100,7 +85,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 placeholder="Write your response..."
                 value={responseText}
                 onChange={(e) => setResponseText(e.target.value)}
-                style={{ marginBottom: '12px' }}
+                className="mb-3"
               />
               <Button
                 type="primary"
@@ -118,18 +103,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           )}
 
           {showAnalysis && (
-            <div style={{
-              padding: '16px',
-              backgroundColor: '#f5f5f5',
-              borderRadius: '8px',
-              border: '1px solid #d9d9d9'
-            }}>
-              <div style={{ marginBottom: '12px' }}>
+            <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
+              <div className="mb-3">
                 <strong>Sentiment:</strong> <Tag color="green">Positive (78%)</Tag>
               </div>
               <div>
                 <strong>Summary:</strong>
-                <p style={{ marginTop: '8px', color: '#666' }}>
+                <p className="mt-2 text-gray-600">
                   The responses show strong positive sentiment with a focus on innovation and team collaboration. 
                   Participants are generally satisfied and engaged with the topic.
                 </p>

@@ -3,11 +3,7 @@ import QuestionCard from '../../Components/QuestionCard';
 
 export default function Questions() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#f5f5f5',
-      padding: '20px'
-    }}>
+    <div className="bg-gray-50 min-h-screen p-5">
       <QuestionCard
         title="Ma Question"
         topic="Technology"
