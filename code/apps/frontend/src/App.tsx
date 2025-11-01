@@ -4,23 +4,27 @@ import CreateQuestion from './pages/Questions/Create'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import NotFound from './pages/NotFound'
-import { AuthProvider } from './context/AuthContext'
+import { useAuth } from './context/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import './App.css'
 
 function App() {
+  const { userInformation } = useAuth()
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-          <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+        { userInformation?.role === 'admin' &&
+          <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
+        }
+        <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

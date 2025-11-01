@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getMyUser = async (id: string) => {
-    const response = await fetch(`${API_URL}/users/v1/${id}`, {
+export const getMyUser = async () => {
+    const response = await fetch(`${API_URL}/users/v1/me`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
