@@ -11,4 +11,4 @@ export const UserRoles = {
  * @type UserRoles
  * @description Type for user roles
  */
-export type UserRoles = typeof UserRoles[keyof typeof UserRoles];
+export type UserRoles = (typeof UserRoles)[keyof typeof UserRoles];
