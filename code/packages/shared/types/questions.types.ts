@@ -12,6 +12,7 @@ export type Answer = {
 export type Question = {
   title: string;
   description: string;
+  category: string;
   roleAccess?: string[];
   userAccess?: ObjectId[];
   discordUserAccess?: string[];
