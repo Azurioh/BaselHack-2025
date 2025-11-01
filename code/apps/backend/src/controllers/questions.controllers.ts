@@ -23,8 +23,8 @@ export class QuestionsController {
     reply.success(question, HttpStatusCode.created);
   }
 
-  async listAllQuestions(request: FastifyRequest<{ Querystring: { filter?: Filter<Question> } }>, reply: FastifyReply) {
-    const questions = await this.questionsService.listAllQuestions(request.query.filter);
+  async listAllQuestions(request: FastifyRequest<{ User: { id: string }, Querystring: { filter?: Filter<Question> } }>, reply: FastifyReply) {
+    const questions = await this.questionsService.listAllQuestions(request.user.id, request.query.filter);
 
     reply.success(questions, HttpStatusCode.ok);
   }

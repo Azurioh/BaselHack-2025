@@ -23,10 +23,23 @@ export class QuestionsService {
     return newQuestion;
   }
 
-  async listAllQuestions(filter?: Filter<Question>) {
+  async listAllQuestions(id: string, filter?: Filter<Question>) {
     const questions = await this.questionsRepository.listAllQuestions(filter);
+    const questionsToBeAnswered: Question[] = [];
+    const answeredQuestions: Question[] = [];
 
-    return questions;
+    for (const question of questions) {
+      if (question.answers.length == 0) {
+        questionsToBeAnswered.push(question);
+        continue;
+      }
+      if (question.answers.find((answer) => answer.userId.toString() === id)) {
+        answeredQuestions.push(question);
+      } else {
+        questionsToBeAnswered.push(question);
+      }
+    }
+    return {questionsToBeAnswered, answeredQuestions};
   }
 
   async findQuestionById(id: string) {

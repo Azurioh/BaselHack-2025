@@ -24,7 +24,9 @@ export default async (app: FastifyInstance) => {
   app.route({
     method: 'GET',
     url: '/v1',
-    handler: questionsController.listAllQuestions.bind(questionsController),
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.listAllQuestions(request, reply),
+    preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',
