@@ -53,7 +53,7 @@ export class UserRepository {
   async linkDiscordAccount(id: string, discordId: string) {
     const linkedUser = await this.db
       .collection<User>(MongoCollections.USERS)
-      .updateOne({ _id: new ObjectId(id) }, { $set: { discordId } });
+      .updateOne({ _id: new ObjectId(id) }, { $set: { discordId, updatedAt: new Date() } });
 
     return linkedUser;
   }
@@ -61,7 +61,7 @@ export class UserRepository {
   async unlinkDiscordAccount(id: string) {
     const unlinkedUser = await this.db
       .collection<User>(MongoCollections.USERS)
-      .updateOne({ _id: new ObjectId(id) }, { $unset: { discordId: '' } });
+      .updateOne({ _id: new ObjectId(id) }, { $unset: { discordId: '' }, $set: { updatedAt: new Date() } });
 
     return unlinkedUser;
   }

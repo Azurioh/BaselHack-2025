@@ -1,12 +1,15 @@
-import type { Answer, Question } from '@baselhack/shared/types/questions.types';
+import type { Answer, CreateLocalQuestionBody, Question } from '@baselhack/shared/types/questions.types';
 import type { QuestionsRepository } from '@repositories/questions.repository';
-import { ObjectId, type Filter } from 'mongodb';
+import type { UserRepository } from '@repositories/user.repository';
+import { type Filter, ObjectId } from 'mongodb';
 
 export class QuestionsService {
   private questionsRepository: QuestionsRepository;
+  private userRepository: UserRepository;
 
-  constructor(questionsRepository: QuestionsRepository) {
+  constructor(questionsRepository: QuestionsRepository, userRepository: UserRepository) {
     this.questionsRepository = questionsRepository;
+    this.userRepository = userRepository;
   }
 
   async createQuestion(question: Question) {
@@ -44,10 +47,10 @@ export class QuestionsService {
     return deletedQuestion;
   }
 
-  async createAnswer(questionId: string, answer: Answer) {
+  async createAnswer(questionId: string, answer: Omit<Answer, 'id'>) {
     const data: Answer = {
       ...answer,
-      id: new ObjectId().toString(),
+      id: new ObjectId(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -78,5 +81,34 @@ export class QuestionsService {
     const deletedAnswer = await this.questionsRepository.deleteAnswer(questionId, answerId);
 
     return deletedAnswer;
+  }
+
+  async createLocalQuestion(
+    question: CreateLocalQuestionBody,
+    createdBy: string,
+  ): Promise<{ question: Question; notFoundUserIds: string[] }> {
+    const userAccess = await this.userRepository.listAllUsers({ discordId: { $in: question.memberDiscordIds } });
+    let notFoundUserIds: string[] = [];
+
+    if (question.memberDiscordIds.length !== userAccess.length) {
+      notFoundUserIds = question.memberDiscordIds.filter((id) => !userAccess.find((user) => user.discordId === id));
+    }
+
+    const data: Question = {
+      title: question.title,
+      description: question.description,
+      anonymous: question.anonymous,
+      deadline: new Date(Date.now() + 1000 * 60 * 60 * 1), // 1 hour
+      userAccess: userAccess.map((user) => user._id),
+      discordUserAccess: notFoundUserIds,
+      answers: [],
+      createdBy: new ObjectId(createdBy),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    await this.questionsRepository.createQuestion(data);
+
+    return { question: data, notFoundUserIds };
   }
 }

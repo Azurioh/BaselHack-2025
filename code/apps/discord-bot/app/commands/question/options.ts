@@ -18,9 +18,15 @@ export const subcommandOptions = [
       },
       {
         type: ApplicationCommandOptionType.String,
-        name: 'content',
-        description: 'The content of the question',
+        name: 'description',
+        description: 'The description of the question',
         required: true,
+      },
+      {
+        type: ApplicationCommandOptionType.Boolean,
+        name: 'anonymous',
+        description: 'Whether the question is anonymous',
+        required: false,
       },
     ],
   },

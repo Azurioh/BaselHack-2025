@@ -11,16 +11,17 @@ class Client {
   private _token: string; /*<! The token used to login to the Discord API */
   private _client: DiscordClient /*<! The instance of the Discord Client */;
   private _commands: Map<string, CommandInterface> /*<! A map to store all slash commands */;
-
+  private _sessions: Map<string, string> /*<! A map to store all sessions */;
   /**
    * Constructor used to set all private attributes
    */
   constructor() {
     this._token = environment.DISCORD_TOKEN;
     this._client = new DiscordClient({
-      intents: [GatewayIntentBits.Guilds],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers],
     });
     this._commands = new Map();
+    this._sessions = new Map();
   }
 
   /**
@@ -38,6 +39,22 @@ class Client {
    */
   getCommands(): Map<string, CommandInterface> {
     return this._commands;
+  }
+
+  getSessions(): Map<string, string> {
+    return this._sessions;
+  }
+
+  setSession(discordId: string, session: string): void {
+    this._sessions.set(discordId, session);
+  }
+
+  getSession(discordId: string): string | undefined {
+    return this._sessions.get(discordId);
+  }
+
+  deleteSession(discordId: string): void {
+    this._sessions.delete(discordId);
   }
 
   /**

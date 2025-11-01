@@ -115,11 +115,19 @@ export class AuthService {
   async linkDiscordAccount(id: string, discordId: string) {
     const linkedUser = await this.userRepository.linkDiscordAccount(id, discordId);
 
+    if (!linkedUser.acknowledged || linkedUser.matchedCount === 0) {
+      throw new ApiError(HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND, 'User not found');
+    }
+
     return linkedUser;
   }
 
   async unlinkDiscordAccount(id: string) {
     const unlinkedUser = await this.userRepository.unlinkDiscordAccount(id);
+
+    if (!unlinkedUser.acknowledged || unlinkedUser.matchedCount === 0) {
+      throw new ApiError(HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND, 'User not found');
+    }
 
     return unlinkedUser;
   }

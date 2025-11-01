@@ -12,6 +12,6 @@ export type {
   SignUpBody,
 } from './types/auth.types';
 
-export type { Answer, Question } from './types/questions.types';
+export type { Answer, CreateLocalQuestionBody, Question } from './types/questions.types';
 
 export type { User } from './types/user.types';

@@ -1,6 +1,6 @@
 import type { Answer, Question } from '@baselhack/shared/types/questions.types';
 import { MongoCollections } from '@enums/mongo-collections-enums';
-import { ObjectId, type Db, type Filter } from 'mongodb';
+import { type Db, type Filter, ObjectId } from 'mongodb';
 
 export class QuestionsRepository {
   private db: Db;
@@ -10,8 +10,7 @@ export class QuestionsRepository {
   }
 
   async createQuestion(question: Question) {
-    const newQuestion = await this.db.collection<Question>(MongoCollections.QUESTIONS)
-      .insertOne({ ...question });
+    const newQuestion = await this.db.collection<Question>(MongoCollections.QUESTIONS).insertOne({ ...question });
 
     return newQuestion;
   }
@@ -26,8 +25,7 @@ export class QuestionsRepository {
   }
 
   async findQuestionById(id: string) {
-    const question = await this.db.collection<Question>(MongoCollections.QUESTIONS)
-      .findOne({ _id: new ObjectId(id) });
+    const question = await this.db.collection<Question>(MongoCollections.QUESTIONS).findOne({ _id: new ObjectId(id) });
 
     return question;
   }
@@ -41,7 +39,8 @@ export class QuestionsRepository {
   }
 
   async deleteQuestion(id: string) {
-    const deletedQuestion = await this.db.collection<Question>(MongoCollections.QUESTIONS)
+    const deletedQuestion = await this.db
+      .collection<Question>(MongoCollections.QUESTIONS)
       .deleteOne({ _id: new ObjectId(id) });
 
     return deletedQuestion;
@@ -56,8 +55,9 @@ export class QuestionsRepository {
   }
 
   async findAnswerByQuestionId(questionId: string, userId: string) {
-    const answer = await this.db.collection<Question>(MongoCollections.QUESTIONS)
-      .findOne({ _id: new ObjectId(questionId), "answers.userId": userId });
+    const answer = await this.db
+      .collection<Question>(MongoCollections.QUESTIONS)
+      .findOne({ _id: new ObjectId(questionId), 'answers.userId': userId });
 
     return answer?.answers[0];
   }
@@ -72,8 +72,8 @@ export class QuestionsRepository {
     const updatedAnswer = await this.db
       .collection<Question>(MongoCollections.QUESTIONS)
       .updateOne(
-        { _id: new ObjectId(questionId), "answers.id": answerId },
-        { $set: { "answers.$.answer": answer.answer } }
+        { _id: new ObjectId(questionId), 'answers.id': answerId },
+        { $set: { 'answers.$.answer': answer.answer } },
       );
 
     return updatedAnswer;
@@ -84,7 +84,7 @@ export class QuestionsRepository {
       .collection<Question>(MongoCollections.QUESTIONS)
       .updateOne(
         { _id: new ObjectId(questionId) },
-        { $pull: { answers: { id: answerId } } }
+        { $pull: { answers: { id: new ObjectId(answerId) } } as Record<string, unknown> },
       );
 
     return deletedAnswer;

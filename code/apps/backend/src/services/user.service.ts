@@ -1,4 +1,5 @@
 import type { User } from '@baselhack/shared/types/user.types';
+import { ObjectId } from '@fastify/mongodb';
 import type { QuestionsRepository } from '@repositories/questions.repository';
 import type { UserRepository } from '@repositories/user.repository';
 
@@ -36,16 +37,16 @@ export class UserService {
   }
 
   async listUserQuestions(id: string) {
-    const questions = await this.questionsRepository.listAllQuestions({ createdBy: id });
+    const questions = await this.questionsRepository.listAllQuestions({ createdBy: new ObjectId(id) });
 
     return questions;
   }
 
   async listUserAnswers(id: string, role: string) {
     const questions = await this.questionsRepository.listAllQuestions({
-      $or: [{ userAccess: id }, { roleAccess: role }],
+      $or: [{ userAccess: new ObjectId(id) }, { roleAccess: role }],
     });
-    const answers = questions.map((question) => question.answers.find((answer) => answer.userId === id));
+    const answers = questions.map((question) => question.answers.find((answer) => answer.userId.toString() === id));
 
     return answers;
   }

@@ -99,6 +99,10 @@ export class AuthController {
       return reply.error('User not found', HttpStatusCode.notFound, Errors.RESOURCE_NOT_FOUND);
     }
 
+    if (!request.body.discordId || request.body.discordId.trim().length === 0) {
+      return reply.error('Discord ID is required', HttpStatusCode.badRequest, Errors.INVALID_CREDENTIALS);
+    }
+
     await this.authService.linkDiscordAccount(request.user.id, request.body.discordId);
 
     const token = generateAccessTokenForDiscord({
