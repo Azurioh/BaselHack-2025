@@ -1,9 +1,18 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import authService from '../services/authService'
+import { getMyUser } from '../api/user'
+
+interface UserInformation {
+  id: string
+  name: string
+  email: string
+  role: string
+}
 
 interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
+  userInformation: UserInformation | null
   login: (email: string, password: string, rememberMe: boolean) => Promise<void>
   register: (
     email: string,
@@ -19,11 +28,24 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [userInformation, setUserInformation] = useState<UserInformation | null>(null)
+
+  const getUserInformation = async () => {
+    const response = await getMyUser();
+
+    setUserInformation({
+      id: response.data._id,
+      name: response.data.name,
+      email: response.data.email,
+      role: response.data.role,
+    })
+  }
 
   useEffect(() => {
     const token = authService.getAccessToken()
     setIsAuthenticated(!!token)
     setIsLoading(false)
+    getUserInformation();
   }, [])
 
   const login = async (
@@ -34,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     try {
       await authService.login({ email, password, rememberMe })
+      await getUserInformation();
       setIsAuthenticated(true)
     } catch (error) {
       setIsAuthenticated(false)
@@ -69,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         isAuthenticated,
         isLoading,
+        userInformation,
         login,
         register,
         logout,

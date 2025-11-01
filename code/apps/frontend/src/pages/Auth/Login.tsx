@@ -21,8 +21,10 @@ export default function Login() {
     setLoading(true)
     try {
       await login(values.email, values.password, values.rememberMe || false)
-      message.success('Login successful!')
-      navigate('/')
+
+      if (localStorage.getItem('accessToken')) {
+        navigate('/')
+      }
     } catch (error: any) {
       message.error(error.message || 'Login failed')
     } finally {
