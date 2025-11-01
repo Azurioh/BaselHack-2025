@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ element }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth()
 
-  // Show loading state while checking authentication
   if (isLoading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -17,7 +16,6 @@ export function ProtectedRoute({ element }: ProtectedRouteProps) {
     )
   }
 
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
