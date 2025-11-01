@@ -2,6 +2,7 @@
 FROM node:slim AS builder
 WORKDIR /app
 
+COPY package.json ./
 COPY packages ./packages
 COPY apps/frontend/package.json /app/apps/frontend/
 
