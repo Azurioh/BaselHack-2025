@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Questions/Questions'
+import CreateQuestion from './pages/Questions/Create'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import NotFound from './pages/NotFound'
@@ -13,6 +14,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
