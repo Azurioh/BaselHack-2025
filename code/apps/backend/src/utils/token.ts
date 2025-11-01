@@ -10,7 +10,7 @@ import type { Maybe } from './common';
  * @returns The signed access token.
  */
 export const generateAccessToken = (payload: AccessTokenPayload) => {
-  return jwt.sign(payload, environment.JWT_SECRET, { expiresIn: '15m' });
+  return jwt.sign(payload, environment.JWT_SECRET, { expiresIn: '2d' });
 };
 
 /**
