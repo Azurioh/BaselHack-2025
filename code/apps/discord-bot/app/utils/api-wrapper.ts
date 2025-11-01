@@ -1,4 +1,5 @@
 import type { CreateLocalQuestionBody, Question } from '@baselhack/shared';
+import type { ObjectId } from 'mongodb';
 import type Client from '@/client';
 import { environment } from './environment';
 
@@ -131,7 +132,7 @@ export const askLocalQuestionToAPI = async (
   client: Client,
   discordId: string,
   body: CreateLocalQuestionBody,
-): Promise<{ question: Question; notFoundUserIds: string[] }> => {
+): Promise<{ question: Question & { _id: ObjectId }; notFoundUserIds: string[] }> => {
   const response = await fetchAPI(
     client,
     discordId,
@@ -148,7 +149,8 @@ export const askLocalQuestionToAPI = async (
     throw new Error('Failed to ask local question to the API');
   }
 
-  const data: { status: string; data: { question: Question; notFoundUserIds: string[] } } = await response.json();
+  const data: { status: string; data: { question: Question & { _id: ObjectId }; notFoundUserIds: string[] } } =
+    await response.json();
   console.log(data);
   return data.data;
 };
