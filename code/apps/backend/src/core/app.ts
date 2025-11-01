@@ -22,6 +22,7 @@ async function build(): Promise<FastifyInstance> {
     logger: true,
     bodyLimit: 10 * 1024 * 1024,
     ignoreTrailingSlash: true,
+    trustProxy: true,
   });
 
   /*!> Setup decorators */
