@@ -3,13 +3,11 @@ import CommandAbstract from '@/abstractCommand';
 import type Client from '@/client';
 import { handleAsk } from './ask';
 import { defaultHandle } from './default';
-import { handleDelete } from './delete';
-import { handleList } from './list';
 import { subcommandOptions } from './options';
 
 /**
  * @class Question
- * @description The question command with subcommands: ask, list, and delete
+ * @description The question command with subcommands: ask
  */
 class Question extends CommandAbstract {
   /**
@@ -20,8 +18,6 @@ class Question extends CommandAbstract {
 
     // Register subcommand handlers
     this.registerSubcommand('ask', handleAsk);
-    this.registerSubcommand('list', handleList);
-    this.registerSubcommand('delete', handleDelete);
   }
 
   /**

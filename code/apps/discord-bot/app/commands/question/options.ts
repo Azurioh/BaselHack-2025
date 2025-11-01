@@ -30,30 +30,4 @@ export const subcommandOptions = [
       },
     ],
   },
-  {
-    type: ApplicationCommandOptionType.Subcommand,
-    name: 'list',
-    description: 'List all your questions',
-    options: [
-      {
-        type: ApplicationCommandOptionType.Integer,
-        name: 'page',
-        description: 'Page number to display',
-        required: false,
-      },
-    ],
-  },
-  {
-    type: ApplicationCommandOptionType.Subcommand,
-    name: 'delete',
-    description: 'Delete a question',
-    options: [
-      {
-        type: ApplicationCommandOptionType.String,
-        name: 'question_id',
-        description: 'The ID of the question to delete',
-        required: true,
-      },
-    ],
-  },
 ];
