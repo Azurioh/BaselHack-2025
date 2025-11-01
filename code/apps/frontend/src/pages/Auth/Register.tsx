@@ -1,4 +1,4 @@
-import { Form, Input, Button, message, Checkbox } from 'antd'
+import { Form, Input, Button, message, Checkbox, Progress } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
@@ -13,10 +13,36 @@ type RegisterFormValues = {
   terms: boolean
 }
 
+const PASSWORD_REQUIREMENTS = {
+  minLength: /^.{8,}$/,
+  hasUpperCase: /[A-Z]/,
+  hasLowerCase: /[a-z]/,
+  hasNumber: /\d/,
+  hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+}
+
+const validatePassword = (password: string) => {
+  return {
+    minLength: PASSWORD_REQUIREMENTS.minLength.test(password),
+    hasUpperCase: PASSWORD_REQUIREMENTS.hasUpperCase.test(password),
+    hasLowerCase: PASSWORD_REQUIREMENTS.hasLowerCase.test(password),
+    hasNumber: PASSWORD_REQUIREMENTS.hasNumber.test(password),
+    hasSpecialChar: PASSWORD_REQUIREMENTS.hasSpecialChar.test(password),
+  }
+}
+
+const getPasswordStrength = (password: string) => {
+  if (!password) return 0
+  const requirements = validatePassword(password)
+  const fulfilledRequirements = Object.values(requirements).filter(Boolean).length
+  return (fulfilledRequirements / 5) * 100
+}
+
 export default function Register() {
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [password, setPassword] = useState('')
   const { register } = useAuth()
 
   const onFinish = async (values: RegisterFormValues) => {
@@ -85,8 +111,13 @@ export default function Register() {
             rules={[
               { required: true, message: 'Please enter a password' },
               {
-                min: 6,
-                message: 'Password must be at least 6 characters',
+                validator: (_, value) => {
+                  if (!value) return Promise.resolve()
+                  const requirements = validatePassword(value)
+                  const allMet = Object.values(requirements).every(Boolean)
+                  if (allMet) return Promise.resolve()
+                  return Promise.reject(new Error('Password does not meet requirements'))
+                },
               },
             ]}
           >
@@ -95,8 +126,35 @@ export default function Register() {
               placeholder="Password"
               size="large"
               className="rounded-md"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
+
+          {password && (
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', color: '#666' }}>Password strength:</span>
+              </div>
+              <Progress percent={getPasswordStrength(password)} strokeColor={getPasswordStrength(password) < 60 ? '#faad14' : getPasswordStrength(password) < 100 ? '#1890ff' : '#52c41a'} />
+              <div style={{ marginTop: '12px', fontSize: '12px' }}>
+                <div style={{ color: validatePassword(password).minLength ? '#52c41a' : '#d9d9d9' }}>
+                  ✓ At least 8 characters
+                </div>
+                <div style={{ color: validatePassword(password).hasUpperCase ? '#52c41a' : '#d9d9d9' }}>
+                  ✓ Contains uppercase letter
+                </div>
+                <div style={{ color: validatePassword(password).hasLowerCase ? '#52c41a' : '#d9d9d9' }}>
+                  ✓ Contains lowercase letter
+                </div>
+                <div style={{ color: validatePassword(password).hasNumber ? '#52c41a' : '#d9d9d9' }}>
+                  ✓ Contains number
+                </div>
+                <div style={{ color: validatePassword(password).hasSpecialChar ? '#52c41a' : '#d9d9d9' }}>
+                  ✓ Contains special character (!@#$%^&* etc)
+                </div>
+              </div>
+            </div>
+          )}
 
           <Form.Item
             label={<span className="font-semibold text-gray-700">Confirm Password</span>}

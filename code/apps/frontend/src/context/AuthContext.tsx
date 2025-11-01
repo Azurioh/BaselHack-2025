@@ -20,7 +20,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Check if user is already logged in on mount
   useEffect(() => {
     const token = authService.getAccessToken()
     setIsAuthenticated(!!token)
@@ -52,7 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     try {
       await authService.register({ email, password, name })
-      // Don't set authenticated until they login
       setIsAuthenticated(false)
     } catch (error) {
       throw error
