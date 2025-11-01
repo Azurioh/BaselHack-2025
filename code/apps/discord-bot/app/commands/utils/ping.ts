@@ -1,7 +1,7 @@
-import type { CommandInteraction } from 'discord.js';
+import { ActionRowBuilder, type ButtonBuilder, type CommandInteraction } from 'discord.js';
 import CommandAbstract from '@/abstractCommand';
 import type Client from '@/client';
-import { ModalEnum } from '@/enums/modal-enums';
+import { ButtonEnum } from '@/enums/button-enums';
 
 /**
  * @class Ping
@@ -21,9 +21,10 @@ class Ping extends CommandAbstract {
    * @param client The Client instance (unused)
    */
   protected async handle(interaction: CommandInteraction, client: Client): Promise<void> {
-    const modal = client.getModals().get(ModalEnum.ANSWER_QUESTION);
-    if (modal) {
-      await interaction.showModal(modal.build());
+    const button = client.getButtons().get(ButtonEnum.ANSWER_QUESTION);
+    if (button) {
+      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button.build());
+      await interaction.reply({ content: 'Button found!', components: [row] });
     } else {
       await interaction.reply({ content: 'Unknown modal, please contact the developers.', ephemeral: true });
     }

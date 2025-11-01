@@ -3,6 +3,7 @@ import { environment } from '@utils/environment';
 import { Client as DiscordClient, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { glob } from 'glob';
 import type { CommandInterface } from '@/abstractCommand';
+import type { ButtonAbstract } from './buttons';
 import type { ModalAbstract } from './modals';
 
 /**
@@ -14,6 +15,7 @@ class Client {
   private _commands: Map<string, CommandInterface> /*<! A map to store all slash commands */;
   private _sessions: Map<string, string> /*<! A map to store all sessions */;
   private _modals: Map<string, ModalAbstract> /*<! A map to store all modals */;
+  private _buttons: Map<string, ButtonAbstract> /*<! A map to store all buttons */;
   /**
    * Constructor used to set all private attributes
    */
@@ -25,6 +27,7 @@ class Client {
     this._commands = new Map();
     this._sessions = new Map();
     this._modals = new Map();
+    this._buttons = new Map();
   }
 
   /**
@@ -46,6 +49,10 @@ class Client {
 
   getModals(): Map<string, ModalAbstract> {
     return this._modals;
+  }
+
+  getButtons(): Map<string, ButtonAbstract> {
+    return this._buttons;
   }
 
   getSessions(): Map<string, string> {
@@ -72,6 +79,7 @@ class Client {
       await this.loadCommands();
       await this.loadEvents();
       await this.loadModals();
+      await this.loadButtons();
     } catch (err) {
       console.error('An error occured during setting up the bot: ', err);
       return;
@@ -171,6 +179,29 @@ class Client {
     );
   }
 
+  private async loadButtons() {
+    const isProduction = require.main?.filename?.includes('/build/') || process.cwd().endsWith('/build');
+    const extension = isProduction ? 'js' : 'ts';
+    const baseDir = isProduction ? 'build' : 'app';
+
+    const buttonFiles = await glob(`${process.cwd()}/${baseDir}/buttons/**/*.${extension}`);
+    await Promise.all(
+      buttonFiles.map(async (buttonPath: string) => {
+        const buttonFile = await import(buttonPath);
+        if (!buttonFile.default) {
+          return;
+        }
+        const button: ButtonAbstract = new buttonFile.default();
+        if (!button) {
+          throw new Error(`The file ${buttonPath} doesn't have a default export.`);
+        }
+        if (!button.getId()) {
+          return;
+        }
+        this._buttons.set(button.getId(), button);
+      }),
+    );
+  }
   /**
    * Register the commands in the Discord API
    */
