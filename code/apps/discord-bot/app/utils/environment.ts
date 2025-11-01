@@ -9,11 +9,13 @@ dotenv.config();
 export interface Environment {
   DISCORD_TOKEN: string /*!< Token of the discord client */;
   API_URL: string /*!< URL of the API */;
+  WEBSITE_URL: string /*!< URL of the website */;
 }
 
 const variables: { [key: string]: string | undefined } = {
   DISCORD_TOKEN: process.env.DISCORD_TOKEN,
   API_URL: process.env.API_URL,
+  WEBSITE_URL: process.env.WEBSITE_URL,
 };
 
 for (const [key, value] of Object.entries(variables)) {
@@ -30,4 +32,5 @@ for (const [key, value] of Object.entries(variables)) {
 export const environment: Environment = {
   DISCORD_TOKEN: process.env.DISCORD_TOKEN as string,
   API_URL: process.env.API_URL as string,
+  WEBSITE_URL: process.env.WEBSITE_URL as string,
 };
