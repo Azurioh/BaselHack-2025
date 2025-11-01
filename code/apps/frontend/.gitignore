@@ -1,8 +1,7 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-.DS_Store
 # dependencies
-node_modules
+node_modules/
 
 # Expo
 .expo/
@@ -42,21 +41,3 @@ app-example
 # generated native folders
 /ios
 /android
-
-# IDE
-.vscode/
-.idea/
-*.sublime-workspace
-*.sublime-project
-
-# OS
-Thumbs.db
-.AppleDouble
-.LSOverride
-
-# Yarn
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
