@@ -39,3 +39,12 @@ export type ForgotPasswordBody = {
 export type RefreshTokenBody = {
   refreshToken: string;
 };
+
+/**
+ * @type LinkDiscordAccountBody
+ *
+ * @description Link Discord account body type
+ */
+export type LinkDiscordAccountBody = {
+  discordId: string;
+};

@@ -11,6 +11,7 @@ export type User = {
   password: string;
   role: UserRoles;
   category: string;
+  discordId?: string;
   createdAt: Date;
   updatedAt: Date;
 };
