@@ -1,6 +1,7 @@
-import type { CommandInteraction } from 'discord.js';
+import { ActionRowBuilder, type ButtonBuilder, type CommandInteraction } from 'discord.js';
 import CommandAbstract from '@/abstractCommand';
 import type Client from '@/client';
+import { ButtonEnum } from '@/enums/button-enums';
 
 /**
  * @class Ping
@@ -17,10 +18,16 @@ class Ping extends CommandAbstract {
   /**
    * @description Reply to the user with "Pong!"
    * @param interaction The interaction
-   * @param _ The Client instance (unused)
+   * @param client The Client instance (unused)
    */
-  protected async handle(interaction: CommandInteraction, _: Client): Promise<void> {
-    await interaction.reply('Pong!');
+  protected async handle(interaction: CommandInteraction, client: Client): Promise<void> {
+    const button = client.getButtons().get(ButtonEnum.ANSWER_QUESTION);
+    if (button) {
+      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button.build());
+      await interaction.reply({ content: 'Button found!', components: [row] });
+    } else {
+      await interaction.reply({ content: 'Unknown modal, please contact the developers.', ephemeral: true });
+    }
   }
 }
 

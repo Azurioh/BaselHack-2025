@@ -61,9 +61,9 @@ export class AuthController {
 
     const accessToken = generateAccessToken({
       id: user._id.toString(),
-      name: user.name,
+      name: user.name || "",
       email: user.email,
-      role: user.role,
+      role: user.role || "",
     });
     const refreshToken = generateRefreshToken({ id: user._id.toString() }, request.body.rememberMe);
 
