@@ -1,10 +1,22 @@
 import '../../index.css';
+import QuestionCard from '../../Components/QuestionCard';
 
 export default function Questions() {
   return (
-    <div>
-      <h1 className="text-blue-600 dark:text-sky-400">Questions Page</h1>
-      <p>Welcome to BaselHack 2025</p>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#f5f5f5',
+      padding: '20px'
+    }}>
+      <QuestionCard
+        title="Ma Question"
+        topic="Technology"
+        isAnonymous={true}
+        targetAudience="employees"
+        createdAt="2h ago"
+      >
+        Description de la question...
+      </QuestionCard>
     </div>
   )
 }
