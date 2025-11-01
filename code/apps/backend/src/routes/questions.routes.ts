@@ -1,4 +1,5 @@
 import { QuestionsController } from '@controllers/questions.controllers';
+import { authMiddleware } from '@middlewares/auth-middleware';
 import { QuestionsRepository } from '@repositories/questions.repository';
 import { QuestionsService } from '@services/questions.service';
 import type { FastifyInstance } from 'fastify';
@@ -23,17 +24,50 @@ export default async (app: FastifyInstance) => {
   });
   app.route({
     method: 'GET',
-    url: '/v1/questions/:id',
+    url: '/v1/questions/:question_id',
     handler: questionsController.findQuestionById.bind(questionsController),
   });
   app.route({
     method: 'PUT',
-    url: '/v1/questions/:id',
-    handler: questionsController.updateQuestion.bind(questionsController),
+    url: '/v1/questions/:question_id',
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.updateQuestion(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
   });
   app.route({
     method: 'DELETE',
-    url: '/v1/questions/:id',
-    handler: questionsController.deleteQuestion.bind(questionsController),
+    url: '/v1/questions/:question_id',
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.deleteQuestion(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
+  });
+  app.route({
+    method: 'POST',
+    url: '/v1/questions/:question_id/answer',
+    handler: questionsController.createAnswer.bind(questionsController),
+  });
+  app.route({
+    method: 'GET',
+    url: '/v1/questions/:question_id/answer',
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.findAnswerByQuestionId(request, reply),
+    preHandler: [authMiddleware()],
+  });
+  app.route({
+    method: 'GET',
+    url: '/v1/questions/:question_id/answers',
+    // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
+    handler: (request: any, reply) => questionsController.listAnswersByQuestionId(request, reply),
+    preHandler: [authMiddleware({ adminOnly: true })],
+  });
+  app.route({
+    method: 'PUT',
+    url: '/v1/questions/:question_id/answer/:answer_id',
+    handler: questionsController.updateAnswer.bind(questionsController),
+  });
+  app.route({
+    method: 'DELETE',
+    url: '/v1/questions/:question_id/answer/:answer_id',
+    handler: questionsController.deleteAnswer.bind(questionsController),
   });
 };

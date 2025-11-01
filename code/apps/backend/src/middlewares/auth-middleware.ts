@@ -5,6 +5,7 @@ import type { User } from '@baselhack/shared/types/user.types';
 import { environment } from '@config/environment';
 import type { AccessTokenPayload } from '@entities/token';
 import { MongoCollections } from '@enums/mongo-collections-enums';
+import { ObjectId } from '@fastify/mongodb';
 import ApiError from '@utils/api-error';
 import type { Maybe } from '@utils/common';
 import { verifyToken } from '@utils/token';
@@ -55,11 +56,11 @@ export const authMiddleware = (options?: AuthMiddlewareParams) => {
         return reply.error('Internal server error', HttpStatusCode.internalServerError, Errors.INTERNAL_SERVER_ERROR);
       }
 
-      if (!decoded || !options?.refreshToken) {
+      if (!decoded || (!decoded && !options?.refreshToken)) {
         return reply.error('Invalid token', HttpStatusCode.unauthorized, Errors.UNAUTHORIZED);
       }
 
-      const user = await request.db.collection<User>(MongoCollections.USERS).findOne({ id: decoded.id });
+      const user = await request.db.collection<User>(MongoCollections.USERS).findOne({ _id: new ObjectId(decoded.id) });
       if (!user) {
         return reply.error('User not found', HttpStatusCode.unauthorized, Errors.UNAUTHORIZED);
       }
