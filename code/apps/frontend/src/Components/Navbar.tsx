@@ -23,31 +23,30 @@ export const Navbar = () => {
 
   return (
     <nav style={{ backgroundColor: '#ffffff' }} className="border-b border-gray-200 px-6 h-16 flex items-center justify-between">
-      {/* Logo/Branding - Gauche */}
       <button
-        onClick={() => navigate('/questions')}
+        onClick={() => navigate('/')}
         className="text-xl font-bold text-black !pl-8 hover:text-gray-800 transition-colors"
       >
         BaselHack
       </button>
 
-      {/* Navigation links - Centre */}
-      <div className="flex gap-8 absolute left-1/2 transform -translate-x-1/2">
-        <button
-          onClick={() => navigate('/questions')}
-          className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
-        >
-          Questions
-        </button>
-        <button
-          onClick={() => navigate('/admin')}
-          className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
-        >
-          Dashboard
-        </button>
-      </div>
+      {userInformation?.role == 'admin' &&
+        <div className="flex gap-8 absolute left-1/2 transform -translate-x-1/2">
+          <button
+            onClick={() => navigate('/')}
+            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+          >
+            Questions
+          </button>
+          <button
+            onClick={() => navigate('/admin')}
+            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+          >
+            Dashboard
+          </button>
+        </div>
+      }
 
-      {/* User menu - Droite */}
       <div className="flex items-center gap-4 !pr-8">
         <Dropdown
           menu={{ items: userMenuItems }}
