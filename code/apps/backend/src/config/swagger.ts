@@ -1,10 +1,10 @@
+import { environment } from '@config/environment';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
-import { environment } from '@config/environment';
 import type { FastifyInstance } from 'fastify';
 
 export const setupSwagger = (app: FastifyInstance): void => {
-  const apibaseUrl: string = environment.API_BASE_URL;
+  const baseUrl = environment.API_BASE_URL.replace(/^http:/, 'https:');
 
   app.register(fastifySwagger, {
     openapi: {
@@ -13,13 +13,21 @@ export const setupSwagger = (app: FastifyInstance): void => {
         description: 'documentation API',
         version: '0.1.0',
       },
-      servers: [{ url: apibaseUrl }],
+      servers: [{ url: baseUrl }],
     },
   });
 
   app.register(fastifySwaggerUi, {
     routePrefix: '/docs',
     staticCSP: true,
-    transformSpecification: (swaggerObject) => swaggerObject,
+    transformSpecification: (swaggerObject: Record<string, unknown>) => {
+      if (swaggerObject.servers && Array.isArray(swaggerObject.servers) && swaggerObject.servers[0]) {
+        const server = swaggerObject.servers[0] as { url?: string };
+        if (server.url) {
+          server.url = server.url.replace(/^http:/, 'https:');
+        }
+      }
+      return swaggerObject;
+    },
   });
 };
