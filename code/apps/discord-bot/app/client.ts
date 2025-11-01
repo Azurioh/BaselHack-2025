@@ -3,6 +3,7 @@ import { environment } from '@utils/environment';
 import { Client as DiscordClient, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { glob } from 'glob';
 import type { CommandInterface } from '@/abstractCommand';
+import type { ModalAbstract } from './modals';
 
 /**
  * Client class, used to handle the discord bot
@@ -12,6 +13,7 @@ class Client {
   private _client: DiscordClient /*<! The instance of the Discord Client */;
   private _commands: Map<string, CommandInterface> /*<! A map to store all slash commands */;
   private _sessions: Map<string, string> /*<! A map to store all sessions */;
+  private _modals: Map<string, ModalAbstract> /*<! A map to store all modals */;
   /**
    * Constructor used to set all private attributes
    */
@@ -22,6 +24,7 @@ class Client {
     });
     this._commands = new Map();
     this._sessions = new Map();
+    this._modals = new Map();
   }
 
   /**
@@ -39,6 +42,10 @@ class Client {
    */
   getCommands(): Map<string, CommandInterface> {
     return this._commands;
+  }
+
+  getModals(): Map<string, ModalAbstract> {
+    return this._modals;
   }
 
   getSessions(): Map<string, string> {
@@ -64,6 +71,7 @@ class Client {
     try {
       await this.loadCommands();
       await this.loadEvents();
+      await this.loadModals();
     } catch (err) {
       console.error('An error occured during setting up the bot: ', err);
       return;
@@ -80,7 +88,13 @@ class Client {
    * Load all events in the events folders
    */
   private async loadEvents() {
-    const eventFiles = await glob(`${process.cwd()}/app/events/**/*.ts`);
+    // Check if we're running from compiled code (build/) or source (app/)
+    // If running from build/index.js, look for .js files in build/, otherwise .ts files in app/
+    const isProduction = require.main?.filename?.includes('/build/') || process.cwd().endsWith('/build');
+    const extension = isProduction ? 'js' : 'ts';
+    const baseDir = isProduction ? 'build' : 'app';
+
+    const eventFiles = await glob(`${process.cwd()}/${baseDir}/events/**/*.${extension}`);
     await Promise.all(
       eventFiles.map(async (eventPath: string) => {
         const eventFile = await import(eventPath);
@@ -108,7 +122,13 @@ class Client {
    * Load all the commands in the commands folders
    */
   private async loadCommands() {
-    const commandFiles = await glob(`${process.cwd()}/app/commands/**/*.ts`);
+    // Check if we're running from compiled code (build/) or source (app/)
+    // If running from build/index.js, look for .js files in build/, otherwise .ts files in app/
+    const isProduction = require.main?.filename?.includes('/build/') || process.cwd().endsWith('/build');
+    const extension = isProduction ? 'js' : 'ts';
+    const baseDir = isProduction ? 'build' : 'app';
+
+    const commandFiles = await glob(`${process.cwd()}/${baseDir}/commands/**/*.${extension}`);
     await Promise.all(
       commandFiles.map(async (commandPath: string) => {
         const commandFile = await import(commandPath);
@@ -123,6 +143,30 @@ class Client {
           return;
         }
         this._commands.set(command.getName(), command);
+      }),
+    );
+  }
+
+  private async loadModals() {
+    const isProduction = require.main?.filename?.includes('/build/') || process.cwd().endsWith('/build');
+    const extension = isProduction ? 'js' : 'ts';
+    const baseDir = isProduction ? 'build' : 'app';
+
+    const modalFiles = await glob(`${process.cwd()}/${baseDir}/modals/**/*.${extension}`);
+    await Promise.all(
+      modalFiles.map(async (modalPath: string) => {
+        const modalFile = await import(modalPath);
+        if (!modalFile.default) {
+          return;
+        }
+        const modal: ModalAbstract = new modalFile.default();
+        if (!modal) {
+          throw new Error(`The file ${modalPath} doesn't have a default export.`);
+        }
+        if (!modal.getId()) {
+          return;
+        }
+        this._modals.set(modal.getId(), modal);
       }),
     );
   }

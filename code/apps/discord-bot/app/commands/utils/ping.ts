@@ -1,6 +1,7 @@
 import type { CommandInteraction } from 'discord.js';
 import CommandAbstract from '@/abstractCommand';
 import type Client from '@/client';
+import { ModalEnum } from '@/enums/modal-enums';
 
 /**
  * @class Ping
@@ -17,10 +18,15 @@ class Ping extends CommandAbstract {
   /**
    * @description Reply to the user with "Pong!"
    * @param interaction The interaction
-   * @param _ The Client instance (unused)
+   * @param client The Client instance (unused)
    */
-  protected async handle(interaction: CommandInteraction, _: Client): Promise<void> {
-    await interaction.reply('Pong!');
+  protected async handle(interaction: CommandInteraction, client: Client): Promise<void> {
+    const modal = client.getModals().get(ModalEnum.ANSWER_QUESTION);
+    if (modal) {
+      await interaction.showModal(modal.build());
+    } else {
+      await interaction.reply({ content: 'Unknown modal, please contact the developers.', ephemeral: true });
+    }
   }
 }
 
