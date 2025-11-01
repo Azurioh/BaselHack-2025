@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import authService from '../services/authService'
 import { getMyUser } from '../api/user'
 
@@ -17,8 +18,7 @@ interface AuthContextType {
   register: (
     email: string,
     password: string,
-    name: string,
-    category: string
+    name: string
   ) => Promise<void>
   logout: () => void
 }

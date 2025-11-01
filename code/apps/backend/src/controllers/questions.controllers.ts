@@ -25,7 +25,10 @@ export class QuestionsController {
     reply.success(question, HttpStatusCode.created);
   }
 
-  async listAllQuestions(request: FastifyRequest<{ User: { id: string }, Querystring: { filter?: Filter<Question> } }>, reply: FastifyReply) {
+  async listAllQuestions(
+    request: FastifyRequest<{ User: { id: string }; Querystring: { filter?: Filter<Question> } }>,
+    reply: FastifyReply,
+  ) {
     const questions = await this.questionsService.listAllQuestions(request.user.id, request.query.filter);
 
     reply.success(questions, HttpStatusCode.ok);
@@ -122,5 +125,11 @@ export class QuestionsController {
     const question = await this.questionsService.createLocalQuestion(request.body, request.user.id);
 
     reply.success(question, HttpStatusCode.created);
+  }
+
+  async generateConcense(request: FastifyRequest<{ Params: { question_id: string } }>, reply: FastifyReply) {
+    const concense = await this.questionsService.generateConcense(request.params.question_id);
+
+    reply.success(concense, HttpStatusCode.ok);
   }
 }
