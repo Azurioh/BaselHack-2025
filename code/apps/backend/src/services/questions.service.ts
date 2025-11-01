@@ -97,6 +97,7 @@ export class QuestionsService {
     const data: Question = {
       title: question.title,
       description: question.description,
+      category: 'local',
       anonymous: question.anonymous,
       deadline: new Date(Date.now() + 1000 * 60 * 60 * 1), // 1 hour
       userAccess: userAccess.map((user) => user._id),
