@@ -1,7 +1,9 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Colors } from '@/constants/theme';
 
 interface TeamMember {
   name: string;
@@ -17,378 +19,356 @@ const teamMembers: TeamMember[] = [
   { name: 'Thomas Furstenberger', email: 'thomas.furstenberger@epitech.eu' },
 ];
 
-const COLORS = {
-  background: '#FFFFFF',
-  text: '#333333',
-  textSecondary: '#888888',
-  accent: '#3B82F6',
-  accentLight: '#EFF6FF',
-  border: '#E5E5E5',
-};
-
 export default function AboutScreen() {
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Hero Section */}
-      <ThemedView style={styles.heroSection}>
-        <View style={styles.heroIcon}>
-          <MaterialIcons name="lightbulb" size={48} color={COLORS.accent} />
+    <ThemedView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}>
+
+      <ThemedView style={{
+        backgroundColor: colors.accentLight,
+        paddingVertical: 48,
+        paddingHorizontal: 20,
+        alignItems: 'center'
+      }}>
+        <View style={{ marginBottom: 16 }}>
+          <MaterialIcons name="lightbulb" size={48} color={colors.accent} />
         </View>
-        <ThemedText style={styles.heroTitle}>BaselHack 2025</ThemedText>
-        <ThemedText style={styles.heroSubtitle}>Consensus.AI - Building the Future Together</ThemedText>
+        <ThemedText style={{
+          fontSize: 32,
+          fontWeight: '800',
+          color: colors.accent,
+          marginBottom: 8
+        }}>BaselHack 2025</ThemedText>
+        <ThemedText style={{
+          fontSize: 16,
+          color: colors.textSecondary,
+          textAlign: 'center'
+        }}>Consensus.AI - Building the Future Together</ThemedText>
       </ThemedView>
 
-      <ThemedView style={styles.content}>
-        {/* Team Card */}
-        <ThemedView style={styles.highlightCard}>
-          <View style={styles.highlightHeader}>
-            <MaterialIcons name="group" size={24} color={COLORS.accent} />
-            <ThemedText style={styles.highlightTitle}>Our Team</ThemedText>
+      <ThemedView style={{
+        paddingHorizontal: 16,
+        paddingVertical: 24
+      }}>
+
+        <ThemedView style={{
+          backgroundColor: colors.card,
+          borderRadius: 12,
+          padding: 20,
+          marginBottom: 16,
+          borderLeftWidth: 4,
+          borderLeftColor: colors.accent,
+          borderWidth: 1,
+          borderTopColor: colors.border,
+          borderRightColor: colors.border,
+          borderBottomColor: colors.border
+        }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 12,
+            gap: 10
+          }}>
+            <MaterialIcons name="group" size={24} color={colors.accent} />
+            <ThemedText style={{
+              fontSize: 18,
+              fontWeight: '600',
+              color: colors.accent
+            }}>Our Team</ThemedText>
           </View>
-          <ThemedText style={styles.highlightText}>
+          <ThemedText style={{
+            fontSize: 14,
+            lineHeight: 22,
+            color: colors.textSecondary
+          }}>
             6 French engineering students from Epitech, united by passion for innovation and problem-solving at BaselHack 2025.
           </ThemedText>
         </ThemedView>
 
-        {/* Challenge Spotlight */}
-        <ThemedView style={[styles.highlightCard, styles.challengeCard]}>
-          <View style={styles.highlightHeader}>
-            <MaterialIcons name="trending-up" size={24} color={COLORS.accent} />
-            <ThemedText style={styles.highlightTitle}>Our Challenge</ThemedText>
+        <ThemedView style={{
+          backgroundColor: colors.accentLight,
+          borderRadius: 12,
+          padding: 20,
+          marginBottom: 16,
+          borderLeftWidth: 4,
+          borderLeftColor: colors.accent,
+          borderWidth: 1,
+          borderTopColor: colors.border,
+          borderRightColor: colors.border,
+          borderBottomColor: colors.border
+        }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 12,
+            gap: 10
+          }}>
+            <MaterialIcons name="trending-up" size={24} color={colors.accent} />
+            <ThemedText style={{
+              fontSize: 18,
+              fontWeight: '600',
+              color: colors.accent
+            }}>Our Challenge</ThemedText>
           </View>
-          <ThemedText style={styles.challengeName}>
+          <ThemedText style={{
+            fontSize: 15,
+            fontWeight: '600',
+            color: colors.text,
+            marginBottom: 10
+          }}>
             Collective Intelligence - Building Consensus Through AI
           </ThemedText>
-          <ThemedText style={styles.highlightText}>
+          <ThemedText style={{
+            fontSize: 14,
+            lineHeight: 22,
+            color: colors.textSecondary
+          }}>
             Create an innovative platform that gathers diverse opinions and leverages AI to extract meaningful consensus, enabling smarter and more inclusive decisions.
           </ThemedText>
         </ThemedView>
 
-        {/* Objectives */}
-        <ThemedView style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <MaterialIcons name="checklist" size={24} color={COLORS.accent} />
-            <ThemedText style={styles.sectionTitle}>Challenge Objectives</ThemedText>
+        <ThemedView style={{ marginBottom: 28 }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 16,
+            gap: 10
+          }}>
+            <MaterialIcons name="checklist" size={24} color={colors.accent} />
+            <ThemedText style={{
+              fontSize: 20,
+              fontWeight: '700',
+              color: colors.accent
+            }}>Challenge Objectives</ThemedText>
           </View>
 
-          <View style={styles.objectivesList}>
+          <View style={{ gap: 12 }}>
             {[
               { icon: 'comment', title: 'Collect Opinions', desc: 'Gather diverse perspectives and arguments from participants' },
               { icon: 'analytics', title: 'Analyze Data', desc: 'Identify common themes, divergences and patterns' },
               { icon: 'summarize', title: 'Generate Consensus', desc: 'Produce balanced summaries reflecting collective wisdom' },
             ].map((obj, idx) => (
-              <ThemedView key={idx} style={styles.objectiveCard}>
-                <View style={styles.objectiveIcon}>
-                  <MaterialIcons name={obj.icon as any} size={20} color={COLORS.accent} />
+              <ThemedView key={idx} style={{
+                flexDirection: 'row',
+                backgroundColor: colors.accentLight,
+                borderRadius: 10,
+                padding: 14,
+                gap: 12,
+                borderLeftWidth: 3,
+                borderLeftColor: colors.accent
+              }}>
+                <View style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 8,
+                  backgroundColor: colors.background,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <MaterialIcons name={obj.icon as any} size={20} color={colors.accent} />
                 </View>
-                <View style={styles.objectiveContent}>
-                  <ThemedText style={styles.objectiveTitle}>{obj.title}</ThemedText>
-                  <ThemedText style={styles.objectiveDesc}>{obj.desc}</ThemedText>
+                <View style={{ flex: 1 }}>
+                  <ThemedText style={{
+                    fontSize: 14,
+                    fontWeight: '600',
+                    color: colors.text,
+                    marginBottom: 2
+                  }}>{obj.title}</ThemedText>
+                  <ThemedText style={{
+                    fontSize: 13,
+                    color: colors.textSecondary
+                  }}>{obj.desc}</ThemedText>
                 </View>
               </ThemedView>
             ))}
           </View>
         </ThemedView>
 
-        {/* Team Members Grid */}
-        <ThemedView style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <MaterialIcons name="people" size={24} color={COLORS.accent} />
-            <ThemedText style={styles.sectionTitle}>Team Members</ThemedText>
+        <ThemedView style={{ marginBottom: 28 }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 16,
+            gap: 10
+          }}>
+            <MaterialIcons name="people" size={24} color={colors.accent} />
+            <ThemedText style={{
+              fontSize: 20,
+              fontWeight: '700',
+              color: colors.accent
+            }}>Team Members</ThemedText>
           </View>
 
-          <View style={styles.teamGrid}>
+          <View style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: 12
+          }}>
             {teamMembers.map((member, index) => (
-              <ThemedView key={index} style={styles.modernTeamCard}>
-                <View style={styles.avatarCircle}>
-                  <MaterialIcons name="person" size={24} color={COLORS.accent} />
+              <ThemedView key={index} style={{
+                flex: 1,
+                minWidth: '45%',
+                backgroundColor: colors.accentLight,
+                borderRadius: 12,
+                padding: 16,
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: colors.accent
+              }}>
+                <View style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  backgroundColor: colors.background,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10
+                }}>
+                  <MaterialIcons name="person" size={24} color={colors.accent} />
                 </View>
-                <ThemedText style={styles.memberName}>{member.name}</ThemedText>
-                <ThemedText style={styles.memberEmail}>{member.email}</ThemedText>
+                <ThemedText style={{
+                  fontSize: 13,
+                  fontWeight: '600',
+                  color: colors.text,
+                  marginBottom: 4,
+                  textAlign: 'center'
+                }}>{member.name}</ThemedText>
+                <ThemedText style={{
+                  fontSize: 11,
+                  color: colors.accent,
+                  textAlign: 'center'
+                }}>{member.email}</ThemedText>
               </ThemedView>
             ))}
           </View>
         </ThemedView>
 
-        {/* Values */}
-        <ThemedView style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <MaterialIcons name="favorite" size={24} color={COLORS.accent} />
-            <ThemedText style={styles.sectionTitle}>Our Values</ThemedText>
+        <ThemedView style={{ marginBottom: 28 }}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 16,
+            gap: 10
+          }}>
+            <MaterialIcons name="favorite" size={24} color={colors.accent} />
+            <ThemedText style={{
+              fontSize: 20,
+              fontWeight: '700',
+              color: colors.accent
+            }}>Our Values</ThemedText>
           </View>
 
-          <View style={styles.valuesGrid}>
+          <View style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: 12
+          }}>
             {[
               { icon: 'flash-on', title: 'Innovation', desc: 'Creative solutions' },
               { icon: 'handshake', title: 'Collaboration', desc: 'Team synergy' },
               { icon: 'star', title: 'Excellence', desc: 'Technical perfection' },
               { icon: 'school', title: 'Learning', desc: 'Continuous growth' },
             ].map((val, idx) => (
-              <ThemedView key={idx} style={styles.valueCard}>
-                <View style={styles.valueIconContainer}>
-                  <MaterialIcons name={val.icon as any} size={24} color={COLORS.accent} />
+              <ThemedView key={idx} style={{
+                flex: 1,
+                minWidth: '48%',
+                backgroundColor: colors.accentLight,
+                borderRadius: 12,
+                padding: 16,
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: colors.border
+              }}>
+                <View style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 10,
+                  backgroundColor: colors.background,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10
+                }}>
+                  <MaterialIcons name={val.icon as any} size={24} color={colors.accent} />
                 </View>
-                <ThemedText style={styles.valueTitle}>{val.title}</ThemedText>
-                <ThemedText style={styles.valueDesc}>{val.desc}</ThemedText>
+                <ThemedText style={{
+                  fontSize: 14,
+                  fontWeight: '600',
+                  color: colors.text,
+                  marginBottom: 4
+                }}>{val.title}</ThemedText>
+                <ThemedText style={{
+                  fontSize: 12,
+                  color: colors.textSecondary,
+                  textAlign: 'center'
+                }}>{val.desc}</ThemedText>
               </ThemedView>
             ))}
           </View>
         </ThemedView>
 
-        {/* Sponsor */}
-        <ThemedView style={styles.sponsorCard}>
-          <ThemedText style={styles.sponsorLabel}>Proud Sponsor</ThemedText>
-          <ThemedText style={styles.sponsorName}>Endress+Hauser</ThemedText>
-          <ThemedText style={styles.sponsorDesc}>
+        <ThemedView style={{
+          backgroundColor: colors.accentLight,
+          borderRadius: 12,
+          padding: 24,
+          alignItems: 'center',
+          borderWidth: 2,
+          borderColor: colors.accent,
+          marginBottom: 24
+        }}>
+          <ThemedText style={{
+            fontSize: 12,
+            fontWeight: '600',
+            color: colors.accent,
+            marginBottom: 8,
+            textTransform: 'uppercase',
+            letterSpacing: 0.5
+          }}>Proud Sponsor</ThemedText>
+          <ThemedText style={{
+            fontSize: 24,
+            fontWeight: '700',
+            color: colors.text,
+            marginBottom: 10
+          }}>Endress+Hauser</ThemedText>
+          <ThemedText style={{
+            fontSize: 13,
+            color: colors.textSecondary,
+            textAlign: 'center',
+            lineHeight: 20
+          }}>
             Global leader in measurement instrumentation driving innovation through digital transformation and collective intelligence.
           </ThemedText>
         </ThemedView>
 
-        {/* Contact CTA */}
-        <ThemedView style={styles.ctaSection}>
-          <MaterialIcons name="mail" size={32} color={COLORS.accent} />
-          <ThemedText style={styles.ctaTitle}>Get In Touch</ThemedText>
-          <ThemedText style={styles.ctaText}>
+        <ThemedView style={{
+          backgroundColor: colors.accentLight,
+          borderRadius: 12,
+          padding: 28,
+          alignItems: 'center',
+          marginBottom: 40,
+          borderLeftWidth: 4,
+          borderLeftColor: colors.accent
+        }}>
+          <MaterialIcons name="mail" size={32} color={colors.accent} />
+          <ThemedText style={{
+            fontSize: 18,
+            fontWeight: '700',
+            color: colors.accent,
+            marginTop: 12,
+            marginBottom: 8
+          }}>Get In Touch</ThemedText>
+          <ThemedText style={{
+            fontSize: 13,
+            color: colors.textSecondary,
+            textAlign: 'center'
+          }}>
             Questions? Ideas? We're always open to collaboration.
           </ThemedText>
         </ThemedView>
       </ThemedView>
     </ScrollView>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  heroSection: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 48,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  heroIcon: {
-    marginBottom: 16,
-  },
-  heroTitle: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: COLORS.accent,
-    marginBottom: 8,
-  },
-  heroSubtitle: {
-    fontSize: 16,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-  },
-  highlightCard: {
-    backgroundColor: COLORS.background,
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.accent,
-    borderWidth: 1,
-    borderTopColor: COLORS.border,
-    borderRightColor: COLORS.border,
-    borderBottomColor: COLORS.border,
-  },
-  challengeCard: {
-    backgroundColor: COLORS.accentLight,
-  },
-  highlightHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-    gap: 10,
-  },
-  highlightTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.accent,
-  },
-  highlightText: {
-    fontSize: 14,
-    lineHeight: 22,
-    color: COLORS.textSecondary,
-  },
-  challengeName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 10,
-  },
-  section: {
-    marginBottom: 28,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 10,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: COLORS.accent,
-  },
-  objectivesList: {
-    gap: 12,
-  },
-  objectiveCard: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.accentLight,
-    borderRadius: 10,
-    padding: 14,
-    gap: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: COLORS.accent,
-  },
-  objectiveIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: COLORS.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  objectiveContent: {
-    flex: 1,
-  },
-  objectiveTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 2,
-  },
-  objectiveDesc: {
-    fontSize: 13,
-    color: COLORS.textSecondary,
-  },
-  teamGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  modernTeamCard: {
-    flex: 1,
-    minWidth: '45%',
-    backgroundColor: COLORS.accentLight,
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.accent,
-  },
-  avatarCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: COLORS.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-  memberName: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  memberEmail: {
-    fontSize: 11,
-    color: COLORS.accent,
-    textAlign: 'center',
-  },
-  valuesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  valueCard: {
-    flex: 1,
-    minWidth: '48%',
-    backgroundColor: COLORS.accentLight,
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  valueIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 10,
-    backgroundColor: COLORS.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-  valueTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 4,
-  },
-  valueDesc: {
-    fontSize: 12,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-  },
-  sponsorCard: {
-    backgroundColor: COLORS.accentLight,
-    borderRadius: 12,
-    padding: 24,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: COLORS.accent,
-    marginBottom: 24,
-  },
-  sponsorLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: COLORS.accent,
-    marginBottom: 8,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  sponsorName: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: COLORS.text,
-    marginBottom: 10,
-  },
-  sponsorDesc: {
-    fontSize: 13,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  ctaSection: {
-    backgroundColor: COLORS.accentLight,
-    borderRadius: 12,
-    padding: 28,
-    alignItems: 'center',
-    marginBottom: 40,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.accent,
-  },
-  ctaTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: COLORS.accent,
-    marginTop: 12,
-    marginBottom: 8,
-  },
-  ctaText: {
-    fontSize: 13,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-  },
-});
