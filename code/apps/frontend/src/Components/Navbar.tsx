@@ -4,6 +4,8 @@ import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 
+const navbarTextStyle = (path: string) => `text-black font-medium text-lg hover:text-gray-800 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110 ${location.pathname === path ? 'underline underline-offset-8' : ''} font-semibold`
+
 export const Navbar = () => {
   const navigate = useNavigate();
   const { userInformation, logout } = useAuth();
@@ -24,7 +26,8 @@ export const Navbar = () => {
 
   const navbarItems: { name: string; path: string }[] = [
     { name: 'Questions', path: '/' },
-    { name: userInformation?.role === 'admin' ? 'Dashboard' : 'History', path: userInformation?.role === 'admin' ? '/admin' : '/history' },
+    { name: 'History', path: '/history' },
+    { name: 'Dashboard', path: '/admin' },
   ];
 
   return (
@@ -42,7 +45,7 @@ export const Navbar = () => {
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className="text-text font-semibold text-lg hover:text-primary hover:bg-background p-6 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+            className={navbarTextStyle(item.path)}
             style={{ fontFamily: 'var(--font-body)' }}
           >
             {item.name}

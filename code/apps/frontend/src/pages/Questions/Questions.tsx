@@ -16,6 +16,7 @@ export default function Questions() {
   const [searchText, setSearchText] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [anonymousFilter, setAnonymousFilter] = useState<string>('all');
+  const [reloadQuestions, setReloadQuestions] = useState<Date>(new Date());
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -35,7 +36,7 @@ export default function Questions() {
     };
 
     fetchQuestions();
-  }, []);
+  }, [reloadQuestions]);
 
   useEffect(() => {
     let filtered = [...questions];
@@ -83,10 +84,8 @@ export default function Questions() {
       <div className="flex justify-center !mt-5">
       </div>
       <div className="my-12 w-full flex justify-center">
-
         <div className="bg-white/90 !p-6 rounded-xl shadow-md max-w-6xl w-full">
-          <h1 className="text-text mb-8 text-center" style={{ fontSize: 'var(--font-size-h1)', fontFamily: 'var(--font-heading)', fontWeight: 'var(--font-weight-bold)' }}>Questions</h1>
-          <div className="flex flex-col lg:flex-row gap-4 items-center">
+          <div className="flex flex-row lg:flex-row gap-4 items-center">
             <Input
               placeholder="Search questions..."
               prefix={<SearchOutlined />}
@@ -126,7 +125,7 @@ export default function Questions() {
       </div>
 
       {filteredQuestions.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 !gap-3 w-full !max-w-7xl !mt-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-1 !gap-8 w-full !max-w-7xl !mt-6 mb-12">
           {filteredQuestions.map((question: any, index) => (
               <QuestionCard
                 key={index}
@@ -137,6 +136,7 @@ export default function Questions() {
                 targetAudience={question.roleAccess?.join(', ') || 'Public'}
                 createdAt={new Date(question.createdAt).toLocaleDateString()}
                 showResponseField={true}
+                setReloadQuestions={setReloadQuestions}
               >
                 {question.description}
               </QuestionCard>
@@ -145,7 +145,7 @@ export default function Questions() {
       )}
 
       {filteredQuestions.length === 0 && (
-        <div className="text-text text-center mt-10" style={{ fontFamily: 'var(--font-body)', opacity: 0.6 }}>
+        <div className="text-gray-500 text-center !mt-20">
           No questions found matching your filters.
         </div>
       )}

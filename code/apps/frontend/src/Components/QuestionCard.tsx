@@ -3,6 +3,7 @@ import { Card, Tag, Button, Input, message, Modal } from "antd";
 import { UsergroupAddOutlined, GlobalOutlined, CalendarOutlined } from '@ant-design/icons';
 import { createAnswer, listAnswersByQuestionId } from '../api/questions';
 import { getUserIdFromToken } from '../utils/auth';
+import { setDefaultResultOrder } from "dns";
 
 const { TextArea } = Input;
 
@@ -15,6 +16,7 @@ interface QuestionCardProps {
   targetAudience?: string;
   createdAt?: string;
   showResponseField?: boolean;
+  setReloadQuestions: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -25,7 +27,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   isAnonymous = false,
   targetAudience = "Public",
   createdAt = "Just now",
-  showResponseField = true
+  showResponseField = true,
+  setReloadQuestions
 }) => {
   const [responseText, setResponseText] = useState("");
   const [responseCount, setResponseCount] = useState(0);
@@ -34,12 +37,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   useEffect(() => {
     const fetchAnswersCount = async () => {
       try {
-        console.log('Fetching answers for questionId:', questionId);
         const answers = await listAnswersByQuestionId(questionId);
 
-        console.log('Answers received:', answers);
         const answersArray = Array.isArray(answers) ? answers : answers.answers || answers.data || [];
-        console.log('Answers array:', answersArray, 'Length:', answersArray.length);
         setResponseCount(answersArray.length);
       } catch (error) {
         console.error('Error fetching answers count:', error);
@@ -53,10 +53,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   return (
     <>
-      <div className="w-full h-[250px]">
+      <div className="w-full">
         <Card
           bordered={true}
-          className="w-full shadow-lg rounded-lg h-full overflow-hidden !bg-white/70 hover:!-translate-y-1 hover:!shadow-xl transition-all duration-300 hover:cursor-pointer"
+          className="w-full shadow-lg rounded-lg h-auto overflow-hidden !bg-white/70 hover:!-translate-y-1 hover:!shadow-xl transition-all duration-300 hover:cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
           <div className="flex gap-2 !mb-3">
@@ -154,12 +154,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                           createdAt: new Date(),
                           updatedAt: new Date()
                         });
-                      const answers = await listAnswersByQuestionId(questionId);
-                      const answersArray = Array.isArray(answers) ? answers : answers.answers || answers.data || [];
-                      setResponseCount(answersArray.length);
-                      setResponseText("");
-                      setIsModalOpen(false);
-                      message.success('Response submitted successfully!');
+                        setReloadQuestions(new Date());
+                        const answers = await listAnswersByQuestionId(questionId);
+                        const answersArray = Array.isArray(answers) ? answers : answers.answers || answers.data || [];
+                        setResponseCount(answersArray.length);
+                        setResponseText("");
+                        setIsModalOpen(false);
+                        message.success('Response submitted successfully!');
                       } catch (error) {
                         console.error('Error submitting response:', error);
                         message.error('Failed to submit response');
@@ -176,10 +177,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <div className="mb-3" style={{ fontFamily: 'var(--font-body)' }}>
                 <strong>Sentiment:</strong> <Tag color="#56CCF2">Positive (78%)</Tag>
               </div>
-              <div style={{ fontFamily: 'var(--font-body)' }}>
-                <strong>Summary:</strong>
-                <p className="mt-2 text-text" style={{ opacity: 0.8 }}>
-                  The responses show strong positive sentiment with a focus on innovation and team collaboration. 
+              <div>
+                <strong className="!ml-2">Summary:</strong>
+                <p className="!mt-2 text-gray-600 !ml-2">
+                  The responses show strong positive sentiment with a focus on innovation and team collaboration.
                   Participants are generally satisfied and engaged with the topic.
                 </p>
               </div>
