@@ -16,25 +16,25 @@ export default async (app: FastifyInstance) => {
 
   app.route({
     method: 'GET',
-    url: '/v1/users/me',
+    url: '/v1/me',
     handler: userController.getUserMe.bind(userController),
     preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',
-    url: '/v1/users/me/questions',
+    url: '/v1/me/questions',
     handler: userController.listMeQuestions.bind(userController),
     preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',
-    url: '/v1/users/me/answers',
+    url: '/v1/me/answers',
     handler: userController.listMeAnswers.bind(userController),
     preHandler: [authMiddleware()],
   });
   app.route({
     method: 'GET',
-    url: '/v1/users/:id',
+    url: '/v1/:id',
     schema: {
       params: {
         type: 'object',
@@ -50,7 +50,7 @@ export default async (app: FastifyInstance) => {
   });
   app.route({
     method: 'GET',
-    url: '/v1/users/:id/questions',
+    url: '/v1/:id/questions',
     schema: {
       params: {
         type: 'object',
@@ -66,7 +66,7 @@ export default async (app: FastifyInstance) => {
   });
   app.route({
     method: 'GET',
-    url: '/v1/users/:id/answers',
+    url: '/v1/:id/answers',
     schema: {
       params: {
         type: 'object',

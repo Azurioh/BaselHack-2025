@@ -5,4 +5,5 @@
 export enum MongoCollections {
   USERS = 'users',
   QUESTIONS = 'questions',
+  CATEGORIES = 'categories',
 }
