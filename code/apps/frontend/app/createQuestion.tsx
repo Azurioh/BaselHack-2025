@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet, View, useWindowDimensions, useColorScheme } from 'react-native';
 import { Button, Card, Divider, Menu, Switch, Text, TextInput } from 'react-native-paper';
+import { Colors } from '@/constants/theme';
 
 export default function CreateQuestionScreen() {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
 
   const [questionTitle, setQuestionTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -19,18 +22,21 @@ export default function CreateQuestionScreen() {
   const dynamicStyles = StyleSheet.create({
     scrollView: {
       flex: 1,
+      backgroundColor: colors.card',
     },
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       padding: isMobile ? 10 : 20,
+      backgroundColor: colors.card',
     },
     contentContainer: {
       flexGrow: 1,
       justifyContent: 'center',
       alignItems: 'center',
       padding: isMobile ? 10 : 20,
+      backgroundColor: colors.card',
     },
     headerContainer: {
       width: '100%',
@@ -43,18 +49,20 @@ export default function CreateQuestionScreen() {
       marginBottom: isMobile ? 8 : 12,
       textAlign: 'left',
       fontSize: isMobile ? 28 : 48,
+      color: colors.accent',
     },
     subtitle: {
       opacity: 0.7,
       textAlign: 'left',
       fontSize: isMobile ? 16 : 24,
+      color: colors.textSecondary',
     },
     card: {
       width: '100%',
       maxWidth: isMobile ? '100%' : 1200,
-      backgroundColor: '#000000ff',
-      borderWidth: 2,
-      borderColor: '#686868ff',
+      backgroundColor: colors.card',
+      borderWidth: 1,
+      borderColor: colors.border',
       padding: isMobile ? 16 : 24,
     },
     cardTitle: {
@@ -62,12 +70,14 @@ export default function CreateQuestionScreen() {
       marginBottom: isMobile ? 16 : 24,
       textAlign: 'left',
       fontSize: isMobile ? 22 : 32,
+      color: colors.text',
     },
     fieldLabel: {
       fontWeight: '600',
       marginBottom: isMobile ? 6 : 8,
       textAlign: 'left',
       fontSize: isMobile ? 18 : 24,
+      color: colors.text',
     },
     textInput: {
       marginBottom: isMobile ? 6 : 8,
@@ -78,6 +88,7 @@ export default function CreateQuestionScreen() {
       textAlign: 'left',
       marginBottom: isMobile ? 16 : 26,
       fontSize: isMobile ? 14 : 18,
+      color: colors.textSecondary',
     },
     menuButton: {
       marginBottom: isMobile ? 6 : 8,
@@ -90,18 +101,19 @@ export default function CreateQuestionScreen() {
     },
     menuButtonLabel: {
       fontSize: isMobile ? 16 : 20,
+      color: colors.text',
     },
     divider: {
       marginTop: isMobile ? 6 : 8,
-      backgroundColor: '#686868ff',
+      backgroundColor: colors.border',
       marginBottom: isMobile ? 16 : 26,
     },
     cardAnon: {
       width: '100%',
       maxWidth: isMobile ? '100%' : 1200,
-      backgroundColor: '#1a1a1aff',
-      borderWidth: 2,
-      borderColor: '#686868ff',
+      backgroundColor: colors.accentLight',
+      borderWidth: 1,
+      borderColor: colors.accent',
       minHeight: isMobile ? 60 : 70,
       marginBottom: isMobile ? 16 : 24,
     },
@@ -117,10 +129,12 @@ export default function CreateQuestionScreen() {
       fontSize: isMobile ? 16 : 20,
       fontWeight: '600',
       marginBottom: 4,
+      color: colors.text',
     },
     cardAnonSubtitle: {
       fontSize: isMobile ? 13 : 16,
       opacity: 0.7,
+      color: colors.textSecondary',
     },
     switch: {
       transform: isMobile ? [{ scaleX: 1.2 }, { scaleY: 1.2 }] : [{ scaleX: 1.5 }, { scaleY: 1.5 }],
@@ -132,11 +146,11 @@ export default function CreateQuestionScreen() {
       marginTop: isMobile ? 16 : 24,
     },
     createButton: {
-      borderRadius: 4,
+      borderRadius: 6,
     },
     createButtonLabel: {
-      fontSize: isMobile ? 16 : 20,
-      fontWeight: 'bold',
+      fontSize: isMobile ? 12 : 14,
+      fontWeight: '600',
     },
   });
 
@@ -264,8 +278,9 @@ export default function CreateQuestionScreen() {
               onPress={() => console.log('Create Question pressed')}
               style={dynamicStyles.createButton}
               labelStyle={dynamicStyles.createButtonLabel}
-              buttonColor="#FFFFFF"
-              textColor="#000000"
+              contentStyle={{ paddingVertical: 6, paddingHorizontal: 16 }}
+              buttonColor="colors.accent"
+              textColor="colors.card"
             >
               Create Question
             </Button>
