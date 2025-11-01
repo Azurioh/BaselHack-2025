@@ -79,7 +79,8 @@ export default function Questions() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen p-8 flex flex-col items-center">
+    // <div className="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen p-8 flex flex-col items-center">
+    <div className="bg-background min-h-screen p-8 flex flex-col items-center">
       <div className="flex justify-center !mt-5">
       </div>
       <div className="my-12 w-full flex justify-center">
@@ -145,7 +146,7 @@ export default function Questions() {
       )}
 
       {filteredQuestions.length === 0 && (
-        <div className="text-gray-500 text-center !mt-10">
+        <div className="text-primary text-center !mt-10">
           No questions found matching your filters.
         </div>
       )}

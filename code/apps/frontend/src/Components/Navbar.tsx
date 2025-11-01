@@ -22,6 +22,11 @@ export const Navbar = () => {
     },
   ];
 
+  const navbarItems: { name: string; path: string }[] = [
+    { name: 'Questions', path: '/' },
+    { name: userInformation?.role === 'admin' ? 'Dashboard' : 'History', path: userInformation?.role === 'admin' ? '/admin' : '/history' },
+  ];
+
   return (
     <nav style={{ backgroundColor: '#ffffff' }} className="border-b border-gray-200 px-6 h-16 flex items-center justify-between">
       <button
@@ -32,27 +37,15 @@ export const Navbar = () => {
       </button>
 
       <div className="flex gap-8 absolute left-1/2 transform -translate-x-1/2">
-        <button
-          onClick={() => navigate('/')}
-          className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
-        >
-          Questions
-        </button>
-        {userInformation?.role == 'admin' ? (
+        {navbarItems.map((item) => (
           <button
-            onClick={() => navigate('/admin')}
-            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+            key={item.path}
+            onClick={() => navigate(item.path)}
+            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 p-6 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
           >
-            Dashboard
+            {item.name}
           </button>
-        ) : (
-          <button
-            onClick={() => navigate('/history')}
-            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
-          >
-            History
-          </button>
-        )}
+        ))}
       </div>
 
       <div className="flex items-center gap-4 !pr-8">

@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@theme {
+  --color-primary: #2F80ED;
+  --color-secondary: #56CCF2;
+  --color-accent: #F2994A;
+  --color-background: #F5F7FA;
+  --color-text: #1F2937;
+  --bg-default: #F5F7FA;
+}
+
 * {
   margin: 0;
   padding: 0;
