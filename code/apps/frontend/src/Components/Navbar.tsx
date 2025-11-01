@@ -59,7 +59,7 @@ export const Navbar = () => {
           placement="bottomRight"
           trigger={['click']}
         >
-          <button className="flex items-center gap-2 text-text hover:bg-background px-3 py-2 rounded-lg transition-colors font-semibold" style={{ fontFamily: 'var(--font-body)' }}>
+          <button className="flex items-center gap-2 text-text hover:bg-background px-3 py-2 rounded-lg transition-colors font-semibold !p-2" style={{ fontFamily: 'var(--font-body)' }}>
             <UserOutlined className="text-lg" />
             <span>{userInformation?.name}</span>
           </button>
