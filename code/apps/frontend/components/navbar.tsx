@@ -1,6 +1,7 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Pressable } from 'react-native';
 import { Link } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Appbar, Menu, Button, Text } from 'react-native-paper';
+import { useState } from 'react';
 
 const COLORS = {
   background: '#0A0A0A',
@@ -16,6 +17,10 @@ interface NavItem {
 }
 
 export function Navbar() {
+  const { width } = useWindowDimensions();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = width < 768;
+
   const navItems: NavItem[] = [
     { name: 'Home', href: '/' },
     { name: 'Questions', href: '/questions' },
@@ -23,20 +28,59 @@ export function Navbar() {
     { name: 'About', href: '/about' },
   ];
 
-  return (
-    <View style={styles.container}>
-      {/* Logo */}
-      <Link href="/" asChild>
-        <Pressable style={styles.logo}>
-          <View style={styles.logoIcon}>
-            <MaterialIcons name="check-circle" size={24} color={COLORS.accent} />
-          </View>
-          <Text style={styles.logoText}>BaselHack</Text>
-        </Pressable>
-      </Link>
+  if (isMobile) {
+    return (
+      <>
+        <Appbar.Header style={styles.appbar}>
+          <Link href="/" asChild>
+            <Appbar.Action icon="check-circle" color={COLORS.accent} size={24} />
+          </Link>
+          <Appbar.Content title="BaselHack" color={COLORS.text} />
+          <Menu
+            visible={menuOpen}
+            onDismiss={() => setMenuOpen(false)}
+            anchor={
+              <Appbar.Action
+                icon={menuOpen ? 'close' : 'menu'}
+                color={COLORS.text}
+                onPress={() => setMenuOpen(!menuOpen)}
+              />
+            }
+          >
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} asChild>
+                <Menu.Item
+                  onPress={() => setMenuOpen(false)}
+                  title={item.name}
+                />
+              </Link>
+            ))}
+            <Menu.Divider />
+            <Link href="/questions" asChild>
+              <Menu.Item
+                onPress={() => setMenuOpen(false)}
+                title="Get Started"
+              />
+            </Link>
+          </Menu>
+        </Appbar.Header>
+      </>
+    );
+  }
 
-      {/* Navigation */}
-      <View style={styles.navLinks}>
+  // Desktop View
+  return (
+    <View style={styles.appbarDesktop}>
+      <View style={styles.leftSection}>
+        <Link href="/" asChild>
+          <Pressable>
+            <Appbar.Action icon="check-circle" color={COLORS.accent} size={24} />
+          </Pressable>
+        </Link>
+        <Text style={styles.logoText}>BaselHack</Text>
+      </View>
+
+      <View style={styles.navContainer}>
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} asChild>
             <Pressable style={({ pressed }) => [styles.navLink, pressed && styles.navLinkPressed]}>
@@ -46,10 +90,15 @@ export function Navbar() {
         ))}
       </View>
 
-      {/* Get Started button */}
       <Link href="/questions" asChild>
-        <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}>
-          <Text style={styles.buttonText}>Get Started</Text>
+        <Pressable>
+          <Button
+            mode="contained"
+            textColor={COLORS.text}
+            buttonColor={COLORS.accent}
+          >
+            Get Started
+          </Button>
         </Pressable>
       </Link>
     </View>
@@ -57,43 +106,41 @@ export function Navbar() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
+  appbar: {
     backgroundColor: COLORS.background,
     borderBottomColor: COLORS.border,
     borderBottomWidth: 1,
+  },
+  appbarDesktop: {
+    backgroundColor: COLORS.background,
+    borderBottomColor: COLORS.border,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 16,
   },
-  logo: {
+  leftSection: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  logoIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    backgroundColor: COLORS.accent,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   logoText: {
     fontSize: 18,
     fontWeight: '600',
     color: COLORS.text,
   },
-  navLinks: {
+  navContainer: {
     flexDirection: 'row',
-    gap: 24,
     flex: 1,
     justifyContent: 'center',
+    gap: 24,
   },
   navLink: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   navLinkPressed: {
     opacity: 0.6,
@@ -101,23 +148,6 @@ const styles = StyleSheet.create({
   navLinkText: {
     fontSize: 14,
     color: COLORS.textSecondary,
-    fontWeight: '500',
-  },
-  button: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 6,
-    alignItems: 'center',
-    gap: 6,
-  },
-  buttonPressed: {
-    opacity: 0.8,
-  },
-  buttonText: {
-    color: COLORS.text,
-    fontSize: 14,
     fontWeight: '500',
   },
 });
