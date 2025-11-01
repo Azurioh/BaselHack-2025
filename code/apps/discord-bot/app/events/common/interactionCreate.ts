@@ -18,41 +18,32 @@ class InteractionCreate extends EventAbstract {
    * @param interaction The interaction
    */
   async run(client: Client, interaction: BaseInteraction): Promise<void> {
-    const file = await this.getFileToLoad(client, interaction);
-
-    if (!file) {
-      if (interaction.isChatInputCommand()) {
-        await interaction.reply({ content: 'Unknown command, please contact the developers.' });
-      } else if (interaction.isModalSubmit()) {
-        const modal = client.getModals().get(interaction.customId);
-        if (modal) {
-          await modal.run(interaction, client);
-        } else {
-          await interaction.reply({ content: 'Unknown modal, please contact the developers.' });
+    if (interaction.isChatInputCommand()) {
+      if (interaction.guild) {
+        const command = client.getCommands().get(interaction.commandName);
+        if (command) {
+          await command.run(interaction, client);
+          return;
         }
       }
-      return;
     }
-    file.run(interaction, client);
-  }
-
-  /**
-   * Get the interaction to execute depending on its type
-   *
-   * @param client The Client instance
-   * @param interaction The interaction
-   */
-  private async getFileToLoad(client: Client, interaction: BaseInteraction) {
-    if (interaction.isChatInputCommand()) {
-      if (!interaction.guild) {
-        await interaction.reply({
-          content: 'Commands can only be executed on a Discord server.',
-        });
-        return null;
+    if (interaction.isModalSubmit()) {
+      const modal = client.getModals().get(interaction.customId);
+      if (modal) {
+        await modal.run(interaction, client);
+        return;
       }
-      return client.getCommands().get(interaction.commandName);
     }
-    return null;
+    if (interaction.isButton()) {
+      const button = client.getButtons().get(interaction.customId);
+      if (button) {
+        await button.run(interaction, client);
+        return;
+      }
+    }
+    if (interaction.isRepliable()) {
+      await interaction.reply({ content: 'Unknown interaction, please contact the developers.' });
+    }
   }
 }
 
