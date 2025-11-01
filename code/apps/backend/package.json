@@ -2,7 +2,7 @@
   "name": "baselhack-backend",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "start": "node build/src/index.js",
+    "start": "node build/apps/backend/src/index.js",
     "dev": "nodemon src/index.ts"
   },
   "devDependencies": {
