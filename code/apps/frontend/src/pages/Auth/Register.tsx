@@ -1,10 +1,12 @@
 import { Form, Input, Button, message, Checkbox } from 'antd'
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react'
 import AuthCard from '../../components/AuthCard'
+import { useAuth } from '../../context/AuthContext'
 
 type RegisterFormValues = {
-  username: string
+  name: string
   email: string
   password: string
   passwordConfirm: string
@@ -14,11 +16,20 @@ type RegisterFormValues = {
 export default function Register() {
   const [form] = Form.useForm()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const { register } = useAuth()
 
-  const onFinish = (values: RegisterFormValues) => {
-    console.log('Register attempt:', values)
-    message.success('Registration successful! You can now sign in.')
-    navigate('/login')
+  const onFinish = async (values: RegisterFormValues) => {
+    setLoading(true)
+    try {
+      await register(values.email, values.password, values.name)
+      message.success('Registration successful! You can now sign in.')
+      navigate('/login')
+    } catch (error: any) {
+      message.error(error.message || 'Registration failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -31,22 +42,22 @@ export default function Register() {
           autoComplete="off"
         >
           <Form.Item
-            label={<span className="font-semibold text-gray-700">Username</span>}
-            name="username"
+            label={<span className="font-semibold text-gray-700">Full Name</span>}
+            name="name"
             rules={[
               {
                 required: true,
-                message: 'Please enter a username',
+                message: 'Please enter your full name',
               },
               {
-                min: 3,
-                message: 'Username must be at least 3 characters',
+                min: 2,
+                message: 'Name must be at least 2 characters',
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="text-blue-500" />}
-              placeholder="Username"
+              placeholder="Your full name"
               size="large"
               className="rounded-md"
             />
@@ -147,6 +158,8 @@ export default function Register() {
               htmlType="submit"
               block
               size="large"
+              loading={loading}
+              disabled={loading}
               className="bg-blue-600 hover:bg-blue-700 font-semibold rounded-md"
             >
               Sign Up

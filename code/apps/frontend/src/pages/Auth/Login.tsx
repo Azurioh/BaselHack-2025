@@ -1,22 +1,33 @@
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button, message, Checkbox } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react'
 import AuthCard from '../../components/AuthCard'
+import { useAuth } from '../../context/AuthContext'
 
 type LoginFormValues = {
   email: string
   password: string
+  rememberMe?: boolean
 }
 
 export default function Login() {
   const [form] = Form.useForm()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
 
-  const onFinish = (values: LoginFormValues) => {
-    console.log('Login attempt:', values)
-    // TODO: Implement authentication logic
-    message.success('Login successful!')
-    navigate('/')
+  const onFinish = async (values: LoginFormValues) => {
+    setLoading(true)
+    try {
+      await login(values.email, values.password, values.rememberMe || false)
+      message.success('Login successful!')
+      navigate('/')
+    } catch (error: any) {
+      message.error(error.message || 'Login failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -63,12 +74,24 @@ export default function Login() {
             />
           </Form.Item>
 
+          <Form.Item
+            name="rememberMe"
+            valuePropName="checked"
+            initialValue={false}
+          >
+            <Checkbox>
+              <span className="text-gray-700">Remember me for 30 days</span>
+            </Checkbox>
+          </Form.Item>
+
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               block
               size="large"
+              loading={loading}
+              disabled={loading}
               className="bg-blue-600 hover:bg-blue-700 font-semibold rounded-md"
             >
               Sign In
