@@ -1,7 +1,7 @@
 import type { RefreshTokenBody } from '@baselhack/shared/types/auth.types';
 import type { User } from '@baselhack/shared/types/user.types';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const login = async (user: Required<Pick<User, 'name'>> & User) => {
     const response = await fetch(`${API_URL}/auth/v1/login`, {
