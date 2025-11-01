@@ -19,24 +19,24 @@ export default function CreateQuestionScreen() {
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
 
-  const dynamicStyles = StyleSheet.create({
+  const getStyles = () => ({
     scrollView: {
       flex: 1,
-      backgroundColor: colors.card',
+      backgroundColor: colors.card,
     },
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       padding: isMobile ? 10 : 20,
-      backgroundColor: colors.card',
+      backgroundColor: colors.card,
     },
     contentContainer: {
       flexGrow: 1,
       justifyContent: 'center',
       alignItems: 'center',
       padding: isMobile ? 10 : 20,
-      backgroundColor: colors.card',
+      backgroundColor: colors.card,
     },
     headerContainer: {
       width: '100%',
@@ -49,20 +49,20 @@ export default function CreateQuestionScreen() {
       marginBottom: isMobile ? 8 : 12,
       textAlign: 'left',
       fontSize: isMobile ? 28 : 48,
-      color: colors.accent',
+      color: colors.accent,
     },
     subtitle: {
       opacity: 0.7,
       textAlign: 'left',
       fontSize: isMobile ? 16 : 24,
-      color: colors.textSecondary',
+      color: colors.textSecondary,
     },
     card: {
       width: '100%',
       maxWidth: isMobile ? '100%' : 1200,
-      backgroundColor: colors.card',
+      backgroundColor: colors.card,
       borderWidth: 1,
-      borderColor: colors.border',
+      borderColor: colors.border,
       padding: isMobile ? 16 : 24,
     },
     cardTitle: {
@@ -70,14 +70,14 @@ export default function CreateQuestionScreen() {
       marginBottom: isMobile ? 16 : 24,
       textAlign: 'left',
       fontSize: isMobile ? 22 : 32,
-      color: colors.text',
+      color: colors.text,
     },
     fieldLabel: {
       fontWeight: '600',
       marginBottom: isMobile ? 6 : 8,
       textAlign: 'left',
       fontSize: isMobile ? 18 : 24,
-      color: colors.text',
+      color: colors.text,
     },
     textInput: {
       marginBottom: isMobile ? 6 : 8,
@@ -88,7 +88,7 @@ export default function CreateQuestionScreen() {
       textAlign: 'left',
       marginBottom: isMobile ? 16 : 26,
       fontSize: isMobile ? 14 : 18,
-      color: colors.textSecondary',
+      color: colors.textSecondary,
     },
     menuButton: {
       marginBottom: isMobile ? 6 : 8,
@@ -101,19 +101,19 @@ export default function CreateQuestionScreen() {
     },
     menuButtonLabel: {
       fontSize: isMobile ? 16 : 20,
-      color: colors.text',
+      color: colors.text,
     },
     divider: {
       marginTop: isMobile ? 6 : 8,
-      backgroundColor: colors.border',
+      backgroundColor: colors.border,
       marginBottom: isMobile ? 16 : 26,
     },
     cardAnon: {
       width: '100%',
       maxWidth: isMobile ? '100%' : 1200,
-      backgroundColor: colors.accentLight',
+      backgroundColor: colors.accentLight,
       borderWidth: 1,
-      borderColor: colors.accent',
+      borderColor: colors.accent,
       minHeight: isMobile ? 60 : 70,
       marginBottom: isMobile ? 16 : 24,
     },
@@ -129,12 +129,12 @@ export default function CreateQuestionScreen() {
       fontSize: isMobile ? 16 : 20,
       fontWeight: '600',
       marginBottom: 4,
-      color: colors.text',
+      color: colors.text,
     },
     cardAnonSubtitle: {
       fontSize: isMobile ? 13 : 16,
       opacity: 0.7,
-      color: colors.textSecondary',
+      color: colors.textSecondary,
     },
     switch: {
       transform: isMobile ? [{ scaleX: 1.2 }, { scaleY: 1.2 }] : [{ scaleX: 1.5 }, { scaleY: 1.5 }],
@@ -155,23 +155,23 @@ export default function CreateQuestionScreen() {
   });
 
   return (
-    <ScrollView style={dynamicStyles.scrollView} contentContainerStyle={dynamicStyles.contentContainer}>
-      <View style={dynamicStyles.headerContainer}>
-        <Text variant="headlineLarge" style={dynamicStyles.title}>
+    <ScrollView style={getStyles().scrollView} contentContainerStyle={getStyles().contentContainer}>
+      <View style={getStyles().headerContainer}>
+        <Text variant="headlineLarge" style={getStyles().title}>
           Create a Question
         </Text>
-        <Text variant="bodyLarge" style={dynamicStyles.subtitle}>
+        <Text variant="bodyLarge" style={getStyles().subtitle}>
           Create question and start gathering opinions
         </Text>
       </View>
 
-      <Card style={dynamicStyles.card}>
+      <Card style={getStyles().card}>
         <Card.Content>
-          <Text variant="titleLarge" style={dynamicStyles.cardTitle}>
+          <Text variant="titleLarge" style={getStyles().cardTitle}>
             Basic Information
           </Text>
 
-          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+          <Text variant="titleMedium" style={getStyles().fieldLabel}>
             Question Title
           </Text>
 
@@ -180,14 +180,14 @@ export default function CreateQuestionScreen() {
             value={questionTitle}
             onChangeText={setQuestionTitle}
             placeholder="What should we prioritize in Q1 2025?"
-            style={dynamicStyles.textInput}
+            style={getStyles().textInput}
           />
 
-          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+          <Text variant="bodySmall" style={getStyles().fieldSubtitle}>
             A clear, concise question that participants will respond to
           </Text>
 
-          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+          <Text variant="titleMedium" style={getStyles().fieldLabel}>
             Description
           </Text>
 
@@ -196,16 +196,16 @@ export default function CreateQuestionScreen() {
             value={description}
             onChangeText={setDescription}
             placeholder="Provide context and any additional information that will help participants give thoughtful responses..."
-            style={dynamicStyles.textInput}
+            style={getStyles().textInput}
             multiline={true}
             numberOfLines={4}
           />
 
-          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+          <Text variant="bodySmall" style={getStyles().fieldSubtitle}>
             Add context, background, or specific areas you want participants to consider
           </Text>
 
-          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+          <Text variant="titleMedium" style={getStyles().fieldLabel}>
             Category
           </Text>
 
@@ -216,9 +216,9 @@ export default function CreateQuestionScreen() {
               <Button
                 mode="outlined"
                 onPress={openMenu}
-                style={dynamicStyles.menuButton}
-                contentStyle={dynamicStyles.menuButtonContent}
-                labelStyle={dynamicStyles.menuButtonLabel}
+                style={getStyles().menuButton}
+                contentStyle={getStyles().menuButtonContent}
+                labelStyle={getStyles().menuButtonLabel}
                 textColor="rgba(255, 255, 255, 0.7)"
               >
                 {category || 'Select a category'}
@@ -232,31 +232,31 @@ export default function CreateQuestionScreen() {
             <Menu.Item onPress={() => { setCategory('Other'); closeMenu(); }} title="Other" />
           </Menu>
 
-          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+          <Text variant="bodySmall" style={getStyles().fieldSubtitle}>
             Helps organize and filter questions
           </Text>
 
-          <Divider style={dynamicStyles.divider} />
+          <Divider style={getStyles().divider} />
 
-          <Text variant="titleLarge" style={dynamicStyles.cardTitle}>
+          <Text variant="titleLarge" style={getStyles().cardTitle}>
             Settings
           </Text>
 
-          <Card style={dynamicStyles.cardAnon}>
-            <Card.Content style={dynamicStyles.cardAnonContent}>
-              <View style={dynamicStyles.cardAnonLeft}>
-                <Text variant="titleMedium" style={dynamicStyles.cardAnonTitle}>
+          <Card style={getStyles().cardAnon}>
+            <Card.Content style={getStyles().cardAnonContent}>
+              <View style={getStyles().cardAnonLeft}>
+                <Text variant="titleMedium" style={getStyles().cardAnonTitle}>
                   Anonymous Responses
                 </Text>
-                <Text variant="bodySmall" style={dynamicStyles.cardAnonSubtitle}>
+                <Text variant="bodySmall" style={getStyles().cardAnonSubtitle}>
                   Allow participants to respond anonymously
                 </Text>
               </View>
-              <Switch value={isAnonymous} onValueChange={setIsAnonymous} style={dynamicStyles.switch} />
+              <Switch value={isAnonymous} onValueChange={setIsAnonymous} style={getStyles().switch} />
             </Card.Content>
           </Card>
 
-          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+          <Text variant="titleMedium" style={getStyles().fieldLabel}>
             End Date
           </Text>
 
@@ -265,22 +265,22 @@ export default function CreateQuestionScreen() {
             value={endDate}
             onChangeText={setEndDate}
             placeholder="jj/mm/aaaa --:--"
-            style={dynamicStyles.textInput}
+            style={getStyles().textInput}
           />
 
-          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+          <Text variant="bodySmall" style={getStyles().fieldSubtitle}>
             Set when the question will close for responses
           </Text>
 
-          <View style={dynamicStyles.buttonContainer}>
+          <View style={getStyles().buttonContainer}>
             <Button
               mode="contained"
               onPress={() => console.log('Create Question pressed')}
-              style={dynamicStyles.createButton}
-              labelStyle={dynamicStyles.createButtonLabel}
+              style={getStyles().createButton}
+              labelStyle={getStyles().createButtonLabel}
               contentStyle={{ paddingVertical: 6, paddingHorizontal: 16 }}
-              buttonColor="colors.accent"
-              textColor="colors.card"
+              buttonColor={colors.accent}
+              textColor={colors.card}
             >
               Create Question
             </Button>
