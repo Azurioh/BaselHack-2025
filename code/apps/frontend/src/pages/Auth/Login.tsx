@@ -1,54 +1,48 @@
-import { Form, Input, Button, message, Checkbox } from 'antd'
-import { MailOutlined, LockOutlined } from '@ant-design/icons'
-import { useNavigate, Link } from 'react-router-dom'
-import { useState } from 'react'
-import AuthCard from '../../Components/AuthCard'
-import { useAuth } from '../../context/AuthContext'
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, message } from 'antd';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthCard from '../../Components/AuthCard';
+import { useAuth } from '../../context/AuthContext';
 
 type LoginFormValues = {
-  email: string
-  password: string
-  rememberMe?: boolean
-}
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+};
 
 export default function Login() {
-  const [form] = Form.useForm()
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const onFinish = async (values: LoginFormValues) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      await login(values.email, values.password, values.rememberMe || false)
+      await login(values.email, values.password, values.rememberMe || false);
 
       if (localStorage.getItem('accessToken')) {
-        navigate('/')
+        navigate('/');
       }
     } catch (error: any) {
-      message.error(error.message || 'Login failed')
+      message.error(error.message || 'Login failed');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <AuthCard title="Login" subtitle="Welcome! Sign in to your account">
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={onFinish}
-          autoComplete="off"
-        >
+        <Form form={form} layout="vertical" onFinish={onFinish} autoComplete="off">
           <Form.Item
             label={<span className="font-semibold text-gray-700">Email</span>}
             name="email"
             rules={[
               { required: true, message: 'Please enter your email' },
               { type: 'email', message: 'Invalid email' },
-            ]}
-          >
+            ]}>
             <Input
               prefix={<MailOutlined className="text-blue-500" />}
               placeholder="your@email.com"
@@ -66,8 +60,7 @@ export default function Login() {
                 min: 6,
                 message: 'Password must be at least 6 characters',
               },
-            ]}
-          >
+            ]}>
             <Input.Password
               prefix={<LockOutlined className="text-blue-500" />}
               placeholder="Password"
@@ -76,11 +69,7 @@ export default function Login() {
             />
           </Form.Item>
 
-          <Form.Item
-            name="rememberMe"
-            valuePropName="checked"
-            initialValue={false}
-          >
+          <Form.Item name="rememberMe" valuePropName="checked" initialValue={false}>
             <Checkbox>
               <span className="text-gray-700">Remember me for 30 days</span>
             </Checkbox>
@@ -94,8 +83,7 @@ export default function Login() {
               size="large"
               loading={loading}
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 font-semibold rounded-md"
-            >
+              className="bg-blue-600 hover:bg-blue-700 font-semibold rounded-md">
               Sign In
             </Button>
           </Form.Item>
@@ -111,5 +99,5 @@ export default function Login() {
         </Form>
       </AuthCard>
     </div>
-  )
+  );
 }
