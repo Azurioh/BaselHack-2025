@@ -1,0 +1,277 @@
+import { useState } from 'react';
+import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Button, Card, Divider, Menu, Switch, Text, TextInput } from 'react-native-paper';
+
+export default function CreateQuestionScreen() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
+
+  const [questionTitle, setQuestionTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [endDate, setEndDate] = useState('');
+
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
+
+  const dynamicStyles = StyleSheet.create({
+    scrollView: {
+      flex: 1,
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: isMobile ? 10 : 20,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: isMobile ? 10 : 20,
+    },
+    headerContainer: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : 1200,
+      marginBottom: isMobile ? 16 : 24,
+      alignItems: 'flex-start',
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: isMobile ? 8 : 12,
+      textAlign: 'left',
+      fontSize: isMobile ? 28 : 48,
+    },
+    subtitle: {
+      opacity: 0.7,
+      textAlign: 'left',
+      fontSize: isMobile ? 16 : 24,
+    },
+    card: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : 1200,
+      backgroundColor: '#000000ff',
+      borderWidth: 2,
+      borderColor: '#686868ff',
+      padding: isMobile ? 16 : 24,
+    },
+    cardTitle: {
+      fontWeight: 'bold',
+      marginBottom: isMobile ? 16 : 24,
+      textAlign: 'left',
+      fontSize: isMobile ? 22 : 32,
+    },
+    fieldLabel: {
+      fontWeight: '600',
+      marginBottom: isMobile ? 6 : 8,
+      textAlign: 'left',
+      fontSize: isMobile ? 18 : 24,
+    },
+    textInput: {
+      marginBottom: isMobile ? 6 : 8,
+      fontSize: isMobile ? 16 : 20,
+    },
+    fieldSubtitle: {
+      opacity: 0.6,
+      textAlign: 'left',
+      marginBottom: isMobile ? 16 : 26,
+      fontSize: isMobile ? 14 : 18,
+    },
+    menuButton: {
+      marginBottom: isMobile ? 6 : 8,
+      justifyContent: 'flex-start',
+      borderRadius: 4,
+      minHeight: isMobile ? 40 : 50,
+    },
+    menuButtonContent: {
+      justifyContent: 'flex-start',
+    },
+    menuButtonLabel: {
+      fontSize: isMobile ? 16 : 20,
+    },
+    divider: {
+      marginTop: isMobile ? 6 : 8,
+      backgroundColor: '#686868ff',
+      marginBottom: isMobile ? 16 : 26,
+    },
+    cardAnon: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : 1200,
+      backgroundColor: '#1a1a1aff',
+      borderWidth: 2,
+      borderColor: '#686868ff',
+      minHeight: isMobile ? 60 : 70,
+      marginBottom: isMobile ? 16 : 24,
+    },
+    cardAnonContent: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    cardAnonLeft: {
+      flex: 1,
+    },
+    cardAnonTitle: {
+      fontSize: isMobile ? 16 : 20,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    cardAnonSubtitle: {
+      fontSize: isMobile ? 13 : 16,
+      opacity: 0.7,
+    },
+    switch: {
+      transform: isMobile ? [{ scaleX: 1.2 }, { scaleY: 1.2 }] : [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+      marginRight: 10,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      marginTop: isMobile ? 16 : 24,
+    },
+    createButton: {
+      borderRadius: 4,
+    },
+    createButtonLabel: {
+      fontSize: isMobile ? 16 : 20,
+      fontWeight: 'bold',
+    },
+  });
+
+  return (
+    <ScrollView style={dynamicStyles.scrollView} contentContainerStyle={dynamicStyles.contentContainer}>
+      <View style={dynamicStyles.headerContainer}>
+        <Text variant="headlineLarge" style={dynamicStyles.title}>
+          Create a Question
+        </Text>
+        <Text variant="bodyLarge" style={dynamicStyles.subtitle}>
+          Create question and start gathering opinions
+        </Text>
+      </View>
+
+      <Card style={dynamicStyles.card}>
+        <Card.Content>
+          <Text variant="titleLarge" style={dynamicStyles.cardTitle}>
+            Basic Information
+          </Text>
+
+          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+            Question Title
+          </Text>
+
+          <TextInput
+            mode="outlined"
+            value={questionTitle}
+            onChangeText={setQuestionTitle}
+            placeholder="What should we prioritize in Q1 2025?"
+            style={dynamicStyles.textInput}
+          />
+
+          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+            A clear, concise question that participants will respond to
+          </Text>
+
+          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+            Description
+          </Text>
+
+          <TextInput
+            mode="outlined"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Provide context and any additional information that will help participants give thoughtful responses..."
+            style={dynamicStyles.textInput}
+            multiline={true}
+            numberOfLines={4}
+          />
+
+          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+            Add context, background, or specific areas you want participants to consider
+          </Text>
+
+          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+            Category
+          </Text>
+
+          <Menu
+            visible={menuVisible}
+            onDismiss={closeMenu}
+            anchor={
+              <Button
+                mode="outlined"
+                onPress={openMenu}
+                style={dynamicStyles.menuButton}
+                contentStyle={dynamicStyles.menuButtonContent}
+                labelStyle={dynamicStyles.menuButtonLabel}
+                textColor="rgba(255, 255, 255, 0.7)"
+              >
+                {category || 'Select a category'}
+              </Button>
+            }
+          >
+            <Menu.Item onPress={() => { setCategory('Technology'); closeMenu(); }} title="Technology" />
+            <Menu.Item onPress={() => { setCategory('Business'); closeMenu(); }} title="Business" />
+            <Menu.Item onPress={() => { setCategory('Marketing'); closeMenu(); }} title="Marketing" />
+            <Menu.Item onPress={() => { setCategory('Product'); closeMenu(); }} title="Product" />
+            <Menu.Item onPress={() => { setCategory('Other'); closeMenu(); }} title="Other" />
+          </Menu>
+
+          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+            Helps organize and filter questions
+          </Text>
+
+          <Divider style={dynamicStyles.divider} />
+
+          <Text variant="titleLarge" style={dynamicStyles.cardTitle}>
+            Settings
+          </Text>
+
+          <Card style={dynamicStyles.cardAnon}>
+            <Card.Content style={dynamicStyles.cardAnonContent}>
+              <View style={dynamicStyles.cardAnonLeft}>
+                <Text variant="titleMedium" style={dynamicStyles.cardAnonTitle}>
+                  Anonymous Responses
+                </Text>
+                <Text variant="bodySmall" style={dynamicStyles.cardAnonSubtitle}>
+                  Allow participants to respond anonymously
+                </Text>
+              </View>
+              <Switch value={isAnonymous} onValueChange={setIsAnonymous} style={dynamicStyles.switch} />
+            </Card.Content>
+          </Card>
+
+          <Text variant="titleMedium" style={dynamicStyles.fieldLabel}>
+            End Date
+          </Text>
+
+          <TextInput
+            mode="outlined"
+            value={endDate}
+            onChangeText={setEndDate}
+            placeholder="jj/mm/aaaa --:--"
+            style={dynamicStyles.textInput}
+          />
+
+          <Text variant="bodySmall" style={dynamicStyles.fieldSubtitle}>
+            Set when the question will close for responses
+          </Text>
+
+          <View style={dynamicStyles.buttonContainer}>
+            <Button
+              mode="contained"
+              onPress={() => console.log('Create Question pressed')}
+              style={dynamicStyles.createButton}
+              labelStyle={dynamicStyles.createButtonLabel}
+              buttonColor="#FFFFFF"
+              textColor="#000000"
+            >
+              Create Question
+            </Button>
+          </View>
+        </Card.Content>
+      </Card>
+    </ScrollView>
+  );
+}
