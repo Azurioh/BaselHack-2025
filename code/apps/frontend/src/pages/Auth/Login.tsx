@@ -2,7 +2,7 @@ import { Form, Input, Button, message, Checkbox } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
-import AuthCard from '../../components/AuthCard'
+import AuthCard from '../../Components/AuthCard'
 import { useAuth } from '../../context/AuthContext'
 
 type LoginFormValues = {
