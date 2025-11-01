@@ -13,7 +13,7 @@ export default function RootLayout() {
 
   return (
     <PaperProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={DefaultTheme}>
         <View style={{ flex: 1 }}>
           <Navbar />
           <Stack>
