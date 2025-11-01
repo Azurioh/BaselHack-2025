@@ -14,6 +14,7 @@ interface QuestionCardProps {
   isAnonymous?: boolean;
   targetAudience?: string;
   createdAt?: string;
+  showResponseField?: boolean;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -23,12 +24,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   topic = "General",
   isAnonymous = false,
   targetAudience = "Public",
-  createdAt = "Just now"
+  createdAt = "Just now",
+  showResponseField = true
 }) => {
   const [responseText, setResponseText] = useState("");
   const [responseCount, setResponseCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchAnswersCount = async () => {
@@ -92,7 +93,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         open={isModalOpen}
         onCancel={() => {
           setIsModalOpen(false);
-          setHasSubmitted(false);
+          setResponseText("");
         }}
         footer={null}
         width={800}
@@ -125,7 +126,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
 
         <div>
-          {!hasSubmitted ? (
+          {showResponseField ? (
             <div className="mb-4">
               <h3 className="text-mg font-semibold mb-3">Respond to question:</h3>
               <TextArea
@@ -157,7 +158,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       const answersArray = Array.isArray(answers) ? answers : answers.answers || answers.data || [];
                       setResponseCount(answersArray.length);
                       setResponseText("");
-                      setHasSubmitted(true);
+                      setIsModalOpen(false);
                       message.success('Response submitted successfully!');
                       } catch (error) {
                         console.error('Error submitting response:', error);
@@ -171,13 +172,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             </div>
           ) : (
             <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
-              <h3 className="text-lg font-semibold mb-4">Analysis</h3>
+              <h3 className="text-lg font-semibold mb-4 !ml-2">Analysis</h3>
               <div className="mb-3">
-                <strong>Sentiment:</strong> <Tag color="green">Positive (78%)</Tag>
+                <strong className="!ml-2">Sentiment:</strong> <Tag color="green">Positive (78%)</Tag>
               </div>
               <div>
-                <strong>Summary:</strong>
-                <p className="mt-2 text-gray-600">
+                <strong className="!ml-2">Summary:</strong>
+                <p className="!mt-2 text-gray-600 !ml-2">
                   The responses show strong positive sentiment with a focus on innovation and team collaboration. 
                   Participants are generally satisfied and engaged with the topic.
                 </p>

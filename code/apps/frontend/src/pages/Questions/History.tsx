@@ -22,8 +22,7 @@ export default function Questions() {
       try {
         setLoading(true);
         const globalData = await getAllQuestions();
-        console.log('Fetched questions data:', globalData);
-        const questionsArray = globalData?.data?.questionsToBeAnswered || [];
+        const questionsArray = globalData?.data?.answeredQuestions || [];
         setQuestions(questionsArray);
         setFilteredQuestions(questionsArray);
       } catch (err) {
@@ -136,7 +135,7 @@ export default function Questions() {
                 isAnonymous={question.anonymous}
                 targetAudience={question.roleAccess?.join(', ') || 'Public'}
                 createdAt={new Date(question.createdAt).toLocaleDateString()}
-                showResponseField={true}
+                showResponseField={false}
               >
                 {question.description}
               </QuestionCard>
@@ -145,7 +144,7 @@ export default function Questions() {
       )}
 
       {filteredQuestions.length === 0 && (
-        <div className="text-gray-500 text-center !mt-10">
+        <div className="text-gray-500 text-center mt-10">
           No questions found matching your filters.
         </div>
       )}

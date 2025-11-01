@@ -30,22 +30,29 @@ export const Navbar = () => {
         BaselHack
       </button>
 
-      {userInformation?.role == 'admin' &&
-        <div className="flex gap-8 absolute left-1/2 transform -translate-x-1/2">
-          <button
-            onClick={() => navigate('/')}
-            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
-          >
-            Questions
-          </button>
+      <div className="flex gap-8 absolute left-1/2 transform -translate-x-1/2">
+        <button
+          onClick={() => navigate('/')}
+          className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+        >
+          Questions
+        </button>
+        {userInformation?.role == 'admin' ? (
           <button
             onClick={() => navigate('/admin')}
             className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
           >
             Dashboard
           </button>
-        </div>
-      }
+        ) : (
+          <button
+            onClick={() => navigate('/history')}
+            className="text-black font-medium text-lg hover:text-gray-800 hover:bg-gray-200 px-6 py-3 rounded-lg transition-all duration-200 scale-100 hover:scale-110"
+          >
+            History
+          </button>
+        )}
+      </div>
 
       <div className="flex items-center gap-4 !pr-8">
         <Dropdown
