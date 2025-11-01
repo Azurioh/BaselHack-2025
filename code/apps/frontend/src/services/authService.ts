@@ -37,7 +37,6 @@ class AuthService {
       const response = await api.post('/auth/v1/login', data)
       const { accessToken, refreshToken } = response.data.data
 
-      // Store tokens in localStorage
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
 

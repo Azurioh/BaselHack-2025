@@ -9,7 +9,6 @@ const api = axios.create({
   },
 })
 
-// Add request interceptor to include auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken')
@@ -23,13 +22,11 @@ api.interceptors.request.use(
   }
 )
 
-// Add response interceptor to handle token refresh
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
 
-    // If 401 and we have a refresh token, try to refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       const refreshToken = localStorage.getItem('refreshToken')
@@ -39,24 +36,19 @@ api.interceptors.response.use(
           const response = await api.post('/auth/v1/refresh-token', {
             refreshToken,
           })
-          // Backend returns new refresh token in data.data.token
           const newRefreshToken = response.data.data.token
           localStorage.setItem('refreshToken', newRefreshToken)
 
-          // Note: The refresh endpoint returns a new refresh token, not an access token
-          // When access token expires, we need to re-login
           localStorage.removeItem('accessToken')
           window.location.href = '/login'
           return Promise.reject(error)
         } catch (refreshError) {
-          // Refresh failed, clear tokens and redirect to login
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
           window.location.href = '/login'
           return Promise.reject(refreshError)
         }
       } else {
-        // No refresh token, redirect to login
         window.location.href = '/login'
       }
     }
