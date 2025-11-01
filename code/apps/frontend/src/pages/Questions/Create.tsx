@@ -13,6 +13,7 @@ type QuestionFormValues = {
   category?: string
   anonymousAnswers?: boolean
   endDate?: string
+  answers?: []
 }
 
 export default function CreateQuestion() {
@@ -52,6 +53,7 @@ export default function CreateQuestion() {
         description: values.description || '',
         category: values.category,
         anonymous: values.anonymousAnswers || false,
+        answers: [],
       }
 
       if (values.endDate) {
