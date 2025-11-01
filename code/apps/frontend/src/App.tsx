@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'
 import { useAuth } from './context/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
+import { Layout } from './components/Layout'
 import './App.css'
 
 function App() {
@@ -15,11 +16,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-        { userInformation?.role === 'admin' &&
-          <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
-        }
-        <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+          { userInformation?.role === 'admin' &&
+            <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
+          }
+          <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
