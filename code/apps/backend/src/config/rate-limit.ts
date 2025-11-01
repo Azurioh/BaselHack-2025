@@ -3,7 +3,7 @@ import type { FastifyInstance } from 'fastify';
 
 export const setupRateLimit = (app: FastifyInstance): void => {
   app.register(fastifyRateLimit, {
-    max: 250,
+    max: 250000,
     timeWindow: '5 minutes',
     addHeaders: {
       'x-ratelimit-limit': true,
