@@ -140,7 +140,8 @@ export default function Questions() {
               createdAt={new Date(question.createdAt).toLocaleDateString()}
               showResponseField={false}
               setReloadQuestions={setReloadQuestions}
-              onSkip={() => {}}>
+              onSkip={() => {}}
+              onSubmit={() => {}}>
               {question.description}
             </QuestionCard>
           ))}

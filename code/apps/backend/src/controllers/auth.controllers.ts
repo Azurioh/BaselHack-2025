@@ -61,9 +61,9 @@ export class AuthController {
 
     const accessToken = generateAccessToken({
       id: user._id.toString(),
-      name: user.name || "",
+      name: user.name || '',
       email: user.email,
-      role: user.role || "",
+      role: user.role || '',
     });
     const refreshToken = generateRefreshToken({ id: user._id.toString() }, request.body.rememberMe);
 
@@ -130,5 +130,29 @@ export class AuthController {
     await this.authService.unlinkDiscordAccount(request.user.id);
 
     reply.success('Discord account unlinked successfully', HttpStatusCode.ok);
+  }
+
+  async randomRegister(_request: FastifyRequest, reply: FastifyReply) {
+    const userData = {
+      email: `user${Math.random().toString(36).substring(2, 15)}@example.com`,
+      password: 'password',
+      name: `User ${Math.random().toString(36).substring(2, 15)}`,
+      category: 'category',
+      secret: 'secret',
+    };
+
+    await this.authService.signUp(userData);
+
+    const loginUser = await this.authService.signIn(userData.email, userData.password);
+
+    const accessToken = generateAccessToken({
+      id: loginUser._id.toString(),
+      name: loginUser.name || '',
+      email: loginUser.email,
+      role: loginUser.role || '',
+    });
+    const refreshToken = generateRefreshToken({ id: loginUser._id.toString() }, true);
+
+    reply.success({ accessToken, refreshToken });
   }
 }

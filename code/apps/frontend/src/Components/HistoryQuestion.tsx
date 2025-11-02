@@ -1,5 +1,6 @@
 import { BarChartOutlined } from '@ant-design/icons';
 import { Button, Tag } from 'antd';
+import { useEffect } from 'react';
 
 interface HistoryQuestionProps {
   questionId: string;
@@ -28,6 +29,11 @@ export function HistoryQuestion({
   consence,
   setModalIsOpen,
 }: HistoryQuestionProps) {
+  useEffect(() => {
+    console.log(questionId);
+    console.log(targetAudience);
+  });
+
   return (
     <div className="flex flex-col gap-2 bg-gray-200/30 rounded-lg !p-4 border border-gray-300 w-full">
       <div className="flex flex-col gap-2 bg-gray-200/30 rounded-lg !p-4 border border-gray-300 w-full">

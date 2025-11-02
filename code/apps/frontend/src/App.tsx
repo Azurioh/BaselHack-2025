@@ -10,6 +10,7 @@ import { ProtectedRoute } from './Components/ProtectedRoute'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import { Layout } from './Components/Layout'
 import './App.css'
+import { CreateAccount } from './pages/CreateAccount'
 
 function App() {
   const { userInformation } = useAuth()
@@ -27,6 +28,7 @@ function App() {
         <Route path="/questions/create" element={<ProtectedRoute element={<CreateQuestion />} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/random" element={<CreateAccount />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -41,4 +41,9 @@ export default async (app: FastifyInstance) => {
     handler: (request: any, reply) => authController.unlinkDiscordAccount(request, reply),
     preHandler: authMiddleware(),
   });
+  app.route({
+    method: 'POST',
+    url: '/v1/random-register',
+    handler: authController.randomRegister.bind(authController),
+  });
 };
