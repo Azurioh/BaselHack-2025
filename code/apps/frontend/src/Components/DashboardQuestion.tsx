@@ -1,6 +1,8 @@
 import { Button, Tag } from 'antd';
+import { generateConcense } from '../api/questions';
 
 interface DashboardQuestionProps {
+  questionId: string;
   title: string;
   topic: string;
   isAnalyzed: boolean;
@@ -10,6 +12,7 @@ interface DashboardQuestionProps {
 }
 
 export function DashboardQuestion({
+  questionId,
   title,
   topic,
   isAnalyzed,
@@ -49,6 +52,7 @@ export function DashboardQuestion({
           <p className="text-sm text-gray-500 !mb-0">Closes {new Date(closesAt).toLocaleDateString()}</p>
         </div>
         <div className="flex gap-2">
+          {!isAnalyzed && <Button type="default" onClick={() => generateConcense(questionId)} >Analyze</Button>}
           <Button type="default">View</Button>
           <Button type="default">Details</Button>
         </div>

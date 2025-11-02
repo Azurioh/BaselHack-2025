@@ -71,6 +71,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex flex-col gap-6">
               <DashboardQuestion
+                questionId="1"
                 title="What should we prioritize in Q1 2025?"
                 topic="Strategy"
                 isAnalyzed={true}
@@ -79,19 +80,21 @@ export default function AdminDashboard() {
                 closesAt="2025-01-01"
               />
               <DashboardQuestion
+                questionId="2"
                 title="What should we prioritize in Q1 2025?"
                 topic="Strategy"
-                isAnalyzed={true}
-                responsesCount={142}
+                isAnalyzed={false}
+                responsesCount={75}
                 totalResponses={200}
                 closesAt="2025-01-01"
               />
               <DashboardQuestion
+                questionId="3"
                 title="What should we prioritize in Q1 2025?"
                 topic="Strategy"
                 isAnalyzed={true}
-                responsesCount={142}
-                totalResponses={200}
+                responsesCount={120}
+                totalResponses={300}
                 closesAt="2025-01-01"
               />
             </div>

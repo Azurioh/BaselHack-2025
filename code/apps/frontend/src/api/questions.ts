@@ -125,3 +125,15 @@ export const deleteAnswer = async (questionId: string, answerId: string) => {
 
   return await response.json();
 };
+
+export const generateConcense = async (questionId: string) => {
+  const response = await fetch(`${API_URL}/questions/v1/${questionId}/concense`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return await response.json();
+};
