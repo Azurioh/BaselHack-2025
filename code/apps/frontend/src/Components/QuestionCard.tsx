@@ -11,6 +11,7 @@ interface QuestionCardProps {
   questionId: string;
   title: string;
   onSkip: () => void;
+  onSubmit: () => void;
   children?: React.ReactNode;
   topic?: string;
   isAnonymous?: boolean;
@@ -25,6 +26,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   questionId,
   title,
   onSkip,
+  onSubmit,
   children,
   topic = 'General',
   isAnonymous = false,
@@ -129,15 +131,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       </div>
 
       <Modal
-        title={<h2 className="text-2xl font-bold">{title}</h2>}
+        title={<h2 className="text-xl !font-bold font-family-heading w-[90%] !mb-4">{title}</h2>}
         open={isModalOpen}
         onCancel={() => {
           setIsModalOpen(false);
           setResponseText('');
         }}
         footer={null}
-        width={800}>
-        <div className="flex gap-2 mb-4">
+        width={1000}>
+        <div className="flex gap-2 !mb-5">
           <Tag color="#2F80ED">{topic}</Tag>
           {isAnonymous && <Tag className="bg-text text-white border-text">Anonymous</Tag>}
         </div>
@@ -147,7 +149,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         <div className="mb-6">{children}</div>
 
         <div
-          className="flex gap-6 items-center text-text text-sm mb-6"
+          className="flex gap-6 items-center text-text text-sm !mb-6"
           style={{ fontFamily: 'var(--font-body)', opacity: 0.7 }}>
           <div className="flex items-center gap-1.5">
             <span>
@@ -174,15 +176,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         <div>
           {showResponseField ? (
             <div className="mb-4">
-              <h3
-                className="text-text mb-3"
-                style={{
-                  fontSize: 'var(--font-size-h4)',
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: 'var(--font-weight-semibold)',
-                }}>
-                Respond to question:
-              </h3>
+              <h3 className="text-text mb-3 !font-semibold text-xl">Respond to question:</h3>
               <TextArea
                 rows={3}
                 placeholder="Write your response..."
@@ -201,12 +195,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                         return;
                       }
                       await createAnswer({
-                        questionId: questionId as any,
+                        questionId,
                         answer: responseText,
-                        userId: userId as any,
-                        id: '' as any,
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
                       });
                       setReloadQuestions(new Date());
                       const answers = await listAnswersByQuestionId(questionId);
@@ -215,6 +205,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       setResponseText('');
                       setIsModalOpen(false);
                       message.success('Response submitted successfully!');
+                      onSubmit();
                     } catch (error) {
                       console.error('Error submitting response:', error);
                       message.error('Failed to submit response');
