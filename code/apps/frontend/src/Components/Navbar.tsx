@@ -27,7 +27,6 @@ export const Navbar = () => {
 
   const navbarItems: { name: string; path: string }[] = [
     { name: 'Questions', path: '/' },
-    { name: 'History', path: '/history' },
     { name: 'Dashboard', path: '/admin' },
   ];
 
@@ -46,13 +45,8 @@ export const Navbar = () => {
             key={item.path}
             onClick={() => navigate(item.path)}
             className={navbarTextStyle(item.path)}
-            style={{ fontFamily: 'var(--font-body)' }}
-          >
-            {item.name != 'Dashboard' || userInformation?.role == 'admin' ? (
-              item.name
-            ) : (
-              null
-            )}
+            style={{ fontFamily: 'var(--font-body)' }}>
+            {item.name !== 'Dashboard' || userInformation?.role === 'admin' ? item.name : null}
           </button>
         ))}
       </div>
