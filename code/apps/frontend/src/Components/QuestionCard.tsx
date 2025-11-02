@@ -143,10 +143,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <Tag color="#2F80ED">{topic}</Tag>
           {isAnonymous && <Tag className="bg-text text-white border-text">Anonymous</Tag>}
         </div>
-        <div className="mb-6 text-text" style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--font-size-base)' }}>
+        <div className="!mb-3 text-text" style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--font-size-base)' }}>
           {children}
         </div>
-        <div className="mb-6">{children}</div>
 
         <div
           className="flex gap-6 items-center text-text text-sm !mb-6"

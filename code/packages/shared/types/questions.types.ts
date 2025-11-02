@@ -23,6 +23,7 @@ export type Question = {
   createdBy: ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  concense?: any;
 };
 
 export type CreateLocalQuestionBody = {

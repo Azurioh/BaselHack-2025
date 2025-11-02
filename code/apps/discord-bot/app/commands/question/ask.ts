@@ -42,7 +42,7 @@ export async function handleAsk(interaction: CommandInteraction, client: Client)
 
     const questionId = newQuestion._id.toString();
     client.addQuestion(interaction.channelId, questionId);
-    const websiteUrl = `${environment.WEBSITE_URL}/questions/${questionId}`;
+    const websiteUrl = `${environment.WEBSITE_URL}`;
 
     const createDMEmbed = (_userId: string) => {
       const embed = new EmbedBuilder()

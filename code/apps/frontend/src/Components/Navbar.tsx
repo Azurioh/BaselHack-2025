@@ -25,9 +25,9 @@ export const Navbar = () => {
     },
   ];
 
-  const navbarItems: { name: string; path: string }[] = [
+  const navbarItems: { name: string; path: string; adminOnly?: boolean }[] = [
     { name: 'Questions', path: '/' },
-    { name: 'Dashboard', path: '/admin' },
+    { name: 'Dashboard', path: '/admin', adminOnly: true },
   ];
 
   return (
@@ -46,7 +46,7 @@ export const Navbar = () => {
             onClick={() => navigate(item.path)}
             className={navbarTextStyle(item.path)}
             style={{ fontFamily: 'var(--font-body)' }}>
-            {item.name !== 'Dashboard' || userInformation?.role === 'admin' ? item.name : null}
+            {item.adminOnly && userInformation?.role !== 'admin' ? null : item.name}
           </button>
         ))}
       </div>
