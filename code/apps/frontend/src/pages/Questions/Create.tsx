@@ -62,7 +62,7 @@ export default function CreateQuestion() {
 
       await createQuestion(questionData)
       message.success('Question created successfully!')
-      navigate('/questions')
+      navigate('/')
     } catch (error: any) {
       message.error(error.message || 'Failed to create question')
     } finally {

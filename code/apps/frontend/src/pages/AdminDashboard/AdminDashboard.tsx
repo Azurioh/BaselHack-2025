@@ -4,9 +4,12 @@ import { Button } from 'antd';
 import { useState } from 'react';
 import { DashboardCard } from '../../Components/DashboardCard';
 import { DashboardQuestion } from '../../Components/DashboardQuestion';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-8 !p-8 !w-full justify-center items-center">
       <div className="flex justify-between items-center w-[90%] max-w-6xl">
@@ -15,7 +18,7 @@ export default function AdminDashboard() {
           <p>Monitor questions, analyze responses, and track consensus across your organization</p>
         </div>
         <div className="flex-3 flex justify-end">
-          <Button type="default" size="large">
+          <Button type="default" size="large" onClick={() => navigate('/questions/create')}>
             <PlusOutlined />
             Add Question
           </Button>
