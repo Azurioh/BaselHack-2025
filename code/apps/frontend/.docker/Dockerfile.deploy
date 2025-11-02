@@ -23,4 +23,7 @@ COPY --from=builder /app/packages ./packages
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/frontend/dist /app/apps/frontend/dist
 EXPOSE 3000
+
+WORKDIR /app/apps/frontend
+
 CMD ["npm", "run", "start"]
