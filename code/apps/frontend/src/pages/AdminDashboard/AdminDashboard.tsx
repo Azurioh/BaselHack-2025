@@ -56,19 +56,19 @@ export default function AdminDashboard() {
             icon={<QuestionCircleOutlined style={{ fontSize: '30px', color: 'var(--color-primary)' }} />}
           />
           <DashboardCard
-            title="Active Questions"
+            title="Total Responses"
             value={12}
             percentage="+3 this week"
             icon={<QuestionCircleOutlined style={{ fontSize: '30px', color: 'var(--color-primary)' }} />}
           />
           <DashboardCard
-            title="Active Questions"
-            value={12}
-            percentage="+3 this week"
+            title="Average response rate"
+            value={100}
+            percentage="+100% from last month"
             icon={<QuestionCircleOutlined style={{ fontSize: '30px', color: 'var(--color-primary)' }} />}
           />
           <DashboardCard
-            title="Active Questions"
+            title="Consensus Achieved"
             value={12}
             percentage="+3 this week"
             icon={<QuestionCircleOutlined style={{ fontSize: '30px', color: 'var(--color-primary)' }} />}

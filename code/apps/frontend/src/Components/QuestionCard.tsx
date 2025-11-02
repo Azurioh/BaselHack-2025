@@ -65,9 +65,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         className="w-full h-[250px] absolute transition-all duration-300 hover:!z-[100]"
         style={{
           top: `${offset}px`,
-          zIndex: 100 - offset, // Higher z-index for cards on top (lower offset)
-          transform: `translateY(${(offset / 10) * -1}px)`, // Slight rotation for depth
-          pointerEvents: isTopCard ? 'auto' : 'none', // Only top card can be interacted with
+          zIndex: 100 - offset,
+          transform: `translateY(${(offset / 10) * -1}px)`,
+          pointerEvents: isTopCard ? 'auto' : 'none',
         }}>
         <Card
           bordered={true}
