@@ -14,7 +14,12 @@
     "backend:dev": "npm run dev --workspace=apps/backend"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "@types/node": "^24.0.3"
+    "@types/node": "^24.0.3",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "@rc-component/async-validator": "^5.0.4",
+    "@rc-component/context": "^2.0.0",
+    "@rc-component/mini-decimal": "^1.1.0"
   }
 }
