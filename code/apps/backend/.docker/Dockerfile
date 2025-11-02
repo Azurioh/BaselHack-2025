@@ -13,4 +13,4 @@ WORKDIR /app/apps/backend
 
 EXPOSE ${PORT}
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
