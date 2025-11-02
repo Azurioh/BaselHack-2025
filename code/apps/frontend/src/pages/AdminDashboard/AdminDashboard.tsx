@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                       questionId={question._id}
                       title={question.title}
                       topic={question.category || "General"}
-                      isAnalyzed={question.concense !== undefined}
+                      isAnalyzed={true}
                       responsesCount={question.answers?.length || 0}
                       totalResponses={100}
                       closesAt={question.deadline ? new Date(question.deadline).toISOString().split('T')[0] : "N/A"}
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
                       questionId={question._id}
                       title={question.title}
                       topic={question.category || "General"}
-                      isAnalyzed={question.concense !== undefined}
+                      isAnalyzed={true}
                       responsesCount={question.answers?.length || 0}
                       totalResponses={100}
                       closesAt={question.deadline ? new Date(question.deadline).toISOString().split('T')[0] : "Closed"}

@@ -130,8 +130,7 @@ export const generateConcense = async (questionId: string) => {
   const response = await fetch(`${API_URL}/questions/v1/${questionId}/concense`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
     },
   });
 
