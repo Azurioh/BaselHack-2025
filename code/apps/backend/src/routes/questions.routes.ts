@@ -86,10 +86,10 @@ export default async (app: FastifyInstance) => {
     preHandler: [authMiddleware()],
   });
   app.route({
-    method: 'GET',
+    method: 'POST',
     url: '/v1/:question_id/concense',
     // biome-ignore lint/suspicious/noExplicitAny: Middleware compatibility
     handler: (request: any, reply) => questionsController.generateConcense(request, reply),
-    // preHandler: [authMiddleware({ adminOnly: true })],
+    preHandler: [authMiddleware({ adminOnly: true })],
   });
 };

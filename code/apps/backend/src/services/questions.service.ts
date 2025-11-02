@@ -157,15 +157,8 @@ export class QuestionsService {
       throw new Error('Question has no answers');
     }
 
-    let concense = await this.questionsRepository.generateConcense(question);
-    concense = concense.replace(/```json\n|```/g, '');
-    try {
-      concense = JSON.parse(concense);
-    } catch (error) {
-      console.log(concense);
-      throw error;
-    }
+    const concenseGenerated = await this.questionsRepository.generateConcense(question, questionId);
 
-    return concense;
+    return concenseGenerated;
   }
 }

@@ -92,7 +92,7 @@ export class QuestionsRepository {
     return deletedAnswer;
   }
 
-  async generateConcense(question: Question): Promise<string> {
+  async generateConcense(question: Question, questionId: string) {
     const mistral = new Mistral({ apiKey: environment.MISTRAL_API_KEY });
     let buffer = '';
 
@@ -112,19 +112,10 @@ export class QuestionsRepository {
       buffer += chunk.data.choices[0].delta.content;
     }
 
-    return buffer;
-    // const response = await mistral.agents.complete({
-    //   agentId: environment.MISTRAL_AGENT_ID,
-    //   messages: [
-    //     {
-    //       role: 'user',
-    //       content: `This is the main question: ${question.title} and this is the question description: ${question.description}
+    const updatedQuestion = await this.db
+      .collection<Question>(MongoCollections.QUESTIONS)
+      .updateOne({ _id: new ObjectId(questionId) }, { $set: { concense: buffer } });
 
-    //       This is the answers: \n===${question.answers.map((answer) => answer.answer).join('\n===\n')}`,
-    //     },
-    //   ],
-    // });
-
-    // return response.choices[0].message.content as string;
+    return updatedQuestion;
   }
 }
