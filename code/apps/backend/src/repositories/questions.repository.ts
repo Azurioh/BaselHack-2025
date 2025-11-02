@@ -112,10 +112,18 @@ export class QuestionsRepository {
       buffer += chunk.data.choices[0].delta.content;
     }
 
-    const updatedQuestion = await this.db
+    buffer = buffer.replace(/```json\n|```/g, '');
+    try {
+      buffer = JSON.parse(buffer);
+    } catch (error) {
+      console.log(buffer);
+      throw error;
+    }
+
+    await this.db
       .collection<Question>(MongoCollections.QUESTIONS)
       .updateOne({ _id: new ObjectId(questionId) }, { $set: { concense: buffer } });
 
-    return updatedQuestion;
+    return buffer;
   }
 }
