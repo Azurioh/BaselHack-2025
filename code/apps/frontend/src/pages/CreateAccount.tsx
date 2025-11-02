@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react';
 
 export function CreateAccount() {
   const navigate = useNavigate();
@@ -17,9 +17,7 @@ export function CreateAccount() {
       }
     }
     createRandomAccount();
-  }, []);
+  }, [navigate, randomRegister]);
 
-  return (
-    null
-  );
+  return null;
 }
