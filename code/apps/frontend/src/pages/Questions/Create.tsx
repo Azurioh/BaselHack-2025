@@ -170,6 +170,15 @@ export default function CreateQuestion() {
             >
               Create Question
             </Button>
+            <Button
+              type="default"
+              block
+              size="large"
+              onClick={() => navigate('/admin')}
+              className="color-accents hover:color-accent font-weight-light rounded-md !mt-3"
+            >
+              Back to Dashboard
+            </Button>
           </Form.Item>
         </Form>
       </AuthCard>

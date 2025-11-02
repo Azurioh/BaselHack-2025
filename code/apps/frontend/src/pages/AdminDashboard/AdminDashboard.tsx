@@ -1,14 +1,37 @@
 import '../../index.css';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardCard } from '../../Components/DashboardCard';
 import { DashboardQuestion } from '../../Components/DashboardQuestion';
 import { useNavigate } from 'react-router-dom';
+import { getAllQuestions } from '../../api/questions';
 
 export default function AdminDashboard() {
   const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [historyQuestions, setHistoryQuestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setLoading(true);
+        const globalData = await getAllQuestions();
+        const questionsArray = globalData?.data?.questionsToBeAnswered || [];
+        const historyQuestionsArray = globalData?.data?.answeredQuestions || [];
+        setQuestions(questionsArray);
+        setHistoryQuestions(historyQuestionsArray);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
 
   return (
     <div className="flex flex-col gap-8 !p-8 !w-full justify-center items-center">
@@ -70,33 +93,41 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="flex flex-col gap-6">
-              <DashboardQuestion
-                questionId="1"
-                title="What should we prioritize in Q1 2025?"
-                topic="Strategy"
-                isAnalyzed={true}
-                responsesCount={142}
-                totalResponses={200}
-                closesAt="2025-01-01"
-              />
-              <DashboardQuestion
-                questionId="2"
-                title="What should we prioritize in Q1 2025?"
-                topic="Strategy"
-                isAnalyzed={false}
-                responsesCount={75}
-                totalResponses={200}
-                closesAt="2025-01-01"
-              />
-              <DashboardQuestion
-                questionId="3"
-                title="What should we prioritize in Q1 2025?"
-                topic="Strategy"
-                isAnalyzed={true}
-                responsesCount={120}
-                totalResponses={300}
-                closesAt="2025-01-01"
-              />
+              {loading ? (
+                <p className="text-text" style={{ fontFamily: 'var(--font-body)' }}>Loading questions...</p>
+              ) : (
+                <>
+                  {questions.map((question: any) => (
+                    <DashboardQuestion
+                      key={question._id}
+                      questionId={question._id}
+                      title={question.title}
+                      topic={question.category || "General"}
+                      isAnalyzed={question.concense !== undefined}
+                      responsesCount={question.answers?.length || 0}
+                      totalResponses={100}
+                      closesAt={question.deadline ? new Date(question.deadline).toISOString().split('T')[0] : "N/A"}
+                    />
+                  ))}
+                  {historyQuestions.map((question: any) => (
+                    <DashboardQuestion
+                      key={question._id}
+                      questionId={question._id}
+                      title={question.title}
+                      topic={question.category || "General"}
+                      isAnalyzed={question.concense !== undefined}
+                      responsesCount={question.answers?.length || 0}
+                      totalResponses={100}
+                      closesAt={question.deadline ? new Date(question.deadline).toISOString().split('T')[0] : "Closed"}
+                    />
+                  ))}
+                </>
+              )}
+              {!loading && questions.length === 0 && historyQuestions.length === 0 && (
+                <p className="text-text text-center" style={{ fontFamily: 'var(--font-body)', opacity: 0.6 }}>
+                  No questions available
+                </p>
+              )}
             </div>
           </div>
         </div>

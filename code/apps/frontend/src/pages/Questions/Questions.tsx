@@ -27,10 +27,8 @@ export default function Questions() {
       try {
         setLoading(true);
         const globalData = await getAllQuestions();
-        console.log('Fetched questions data:', globalData);
         const questionsArray = globalData?.data?.questionsToBeAnswered || [];
         const historyQuestionsArray = globalData?.data?.answeredQuestions || [];
-        console.log(historyQuestionsArray);
         setQuestions(questionsArray);
         setFilteredQuestions(questionsArray);
         setHistoryQuestions(historyQuestionsArray);
