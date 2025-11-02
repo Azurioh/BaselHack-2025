@@ -18,7 +18,7 @@ export default function Questions() {
   const [searchText, setSearchText] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [anonymousFilter, setAnonymousFilter] = useState<string>('all');
-  const [_reloadQuestions, setReloadQuestions] = useState<Date>(new Date());
+  const [reloadQuestions, setReloadQuestions] = useState<Date>(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConsenseModalOpen, setIsConsenseModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
@@ -42,7 +42,7 @@ export default function Questions() {
     };
 
     fetchQuestions();
-  }, []);
+  }, [reloadQuestions]);
 
   useEffect(() => {
     let filtered = [...questions];
