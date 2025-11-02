@@ -159,7 +159,12 @@ export class QuestionsService {
 
     let concense = await this.questionsRepository.generateConcense(question);
     concense = concense.replace(/```json\n|```/g, '');
-    concense = JSON.parse(concense);
+    try {
+      concense = JSON.parse(concense);
+    } catch (error) {
+      console.log(concense);
+      throw error;
+    }
 
     return concense;
   }
