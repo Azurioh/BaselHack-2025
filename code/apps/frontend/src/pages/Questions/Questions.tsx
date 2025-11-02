@@ -1,7 +1,7 @@
 import '../../index.css';
 import { SearchOutlined } from '@ant-design/icons';
 import type { Question } from '@baselhack/shared/types/questions.types';
-import { Input, Modal, Select, Space } from 'antd';
+import { Input, Modal, Select, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { getAllQuestions } from '../../api/questions';
 import { HistoryQuestion } from '../../Components/HistoryQuestion';
@@ -20,7 +20,8 @@ export default function Questions() {
   const [anonymousFilter, setAnonymousFilter] = useState<string>('all');
   const [_reloadQuestions, setReloadQuestions] = useState<Date>(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedQuestion, _setSelectedQuestion] = useState<Question | null>(null);
+  const [isConsenseModalOpen, setIsConsenseModalOpen] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -176,16 +177,23 @@ export default function Questions() {
         <h3 className="text-text mb-8 text-center !font-black text-5xl">History of questions</h3>
         {historyQuestions.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-1 !gap-4 w-full !max-w-7xl !mt-6 mb-12">
-            {historyQuestions.map((question: any) => (
-              <HistoryQuestion
-                key={question._id}
-                questionId={question._id}
-                title={question.title}
-                topic={question.category}
-                targetAudience={question.roleAccess?.join(', ') || 'Public'}
-                createdAt={new Date(question.createdAt).toLocaleDateString()}
-              />
-            ))}
+            {historyQuestions
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+              .map((question: any) => (
+                <HistoryQuestion
+                  key={question._id}
+                  questionId={question._id}
+                  title={question.title}
+                  topic={question.category}
+                  targetAudience={question.roleAccess?.join(', ') || 'Public'}
+                  createdAt={new Date(question.createdAt).toLocaleDateString()}
+                  consence={question.concense}
+                  setModalIsOpen={() => {
+                    setIsConsenseModalOpen(true);
+                    setSelectedQuestion(question);
+                  }}
+                />
+              ))}
           </div>
         )}
       </div>
@@ -193,6 +201,66 @@ export default function Questions() {
         <div className="flex flex-col w-[95%]">
           <h3 className="text-text mb-8 text-xl">{selectedQuestion?.title}</h3>
           <p className="text-text mb-8">{selectedQuestion?.description}</p>
+        </div>
+      </Modal>
+
+      <Modal
+        open={isConsenseModalOpen && selectedQuestion?.concense !== undefined}
+        onCancel={() => setIsConsenseModalOpen(false)}
+        footer={null}
+        width={1000}>
+        <div className="flex flex-col w-[95%]">
+          <div className="flex items-center justify-between !mb-8">
+            <p className="text-2xl !font-semibold !mb-0 flex-8">{selectedQuestion?.concense?.manager_question}</p>
+            <div className="flex-2 flex items-center justify-end">
+              <Tag
+                color={selectedQuestion?.concense?.approve_percentage >= 50 ? 'green' : 'red'}
+                style={{ transform: 'scale(1.3)' }}>
+                {selectedQuestion?.concense?.approve_percentage}%
+              </Tag>
+            </div>
+          </div>
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2">
+              <p className="text-xl !font-semibold !mb-0">💬 Summary of feedback</p>
+              <p className="text-text !mb-0">{selectedQuestion?.concense?.summary_of_feedback}</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xl !font-semibold !mb-0">✅ Points of agreement</p>
+              <div className="flex flex-wrap gap-3">
+                {selectedQuestion?.concense?.points_of_agreement.map((point: string) => (
+                  <Tag key={point} color="green">
+                    {point}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xl !font-semibold !mb-0">❌ Points of disagreement</p>
+              <p className="text-text !mb-0">
+                {selectedQuestion?.concense?.points_of_disagreement.map((point: string) => (
+                  <Tag key={point} color="red">
+                    {point}
+                  </Tag>
+                ))}
+                {selectedQuestion?.concense?.points_of_disagreement.length === 0 && (
+                  <p className="text-text !mb-0">No points of disagreement</p>
+                )}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xl !font-semibold !mb-0">🤝 Consensus summary</p>
+              <p className="text-text !mb-0">{selectedQuestion?.concense?.consensus_summary}</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xl !font-semibold !mb-0">💡 Recommendations</p>
+              <div className="text-text !mb-0 flex flex-col !gap-1 !mb-0">
+                {selectedQuestion?.concense?.recommendations.map((recommendation: string) => (
+                  <p key={recommendation}>{recommendation}</p>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </Modal>
     </div>
