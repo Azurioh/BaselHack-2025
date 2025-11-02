@@ -8,6 +8,15 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  preview: {
+    host: '0.0.0.0',
+    port: 3000,
+    allowedHosts: [
+      'baselhack.azu-dev.fr',
+      'localhost',
+      '.azu-dev.fr', // Allow all subdomains of azu-dev.fr
+    ],
+  },
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
